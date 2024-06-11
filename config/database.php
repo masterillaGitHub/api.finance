@@ -167,4 +167,6 @@ return [
 
     ],
 
+    'add_initial_migration_data' => env('APP_ADD_INITIAL_MIGRATION_DATA')
+
 ];

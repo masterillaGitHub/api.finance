@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -35,6 +38,10 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        if (config('database.add_initial_migration_data')) {
+            $this->addInitialData();
+        }
     }
 
     /**
@@ -45,5 +52,15 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+    }
+
+    private function addInitialData(): void
+    {
+        DB::table('users')->insert([
+            'name' => 'User',
+            'email' => 'user@test.com',
+            'password' => Hash::make('123123123'),
+            'created_at' => now(),
+        ]);
     }
 };
