@@ -37,7 +37,8 @@ class AccountRepository extends CoreRepository
         return $this->builder($model::query())
             ->setAllowedIncludes([
                 'category',
-                'currency'
+                'currency',
+                'sums',
             ])
             ->setAllowedFilters([])
             ->get();

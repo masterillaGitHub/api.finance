@@ -22,6 +22,7 @@ class AccountResource extends JsonResource
             'credit_limit' => $this->whenHas('credit_limit', $this->credit_limit),
             'category' => AccountCategoryResource::make($this->whenLoaded('category')),
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),
+            'sums' => AccountSumResource::collection($this->whenLoaded('sums')),
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('symbol', 10);
             $table->string('alphabetic_code', 3);
             $table->string('numeric_code', 3);
+            $table->unsignedTinyInteger('number_decimals');
             $table->string('name', 50);
             $table->string('country_name', 50);
             $table->string('country_code', 2);
@@ -39,9 +40,9 @@ return new class extends Migration
     private function addInitialData(): void
     {
         $data = collect([
-            ['UA', 'Україна', 'Гривня', '₴', 'UAH', 980],
-            ['US', 'США', 'Долар США', '$', 'USD', 840],
-            ['EU', 'Євросоюз', 'Євро', '€', 'EUR', 978],
+            ['UA', 'Україна', 'Гривня', '₴', 'UAH', 980, 2],
+            ['US', 'США', 'Долар США', '$', 'USD', 840, 2],
+            ['EU', 'Євросоюз', 'Євро', '€', 'EUR', 978, 2],
         ])
             ->map(fn(array $currency) => $this->currencyRow($currency))
             ->toArray();
@@ -51,9 +52,10 @@ return new class extends Migration
 
     private function currencyRow(array $row): array
     {
-        [$countryCode, $countryName, $name, $symbol, $alphabeticCode, $numericCode] = $row;
+        [$countryCode, $countryName, $name, $symbol, $alphabeticCode, $numericCode, $numberDecimals] = $row;
 
         return [
+            'number_decimals' => $numberDecimals,
             'country_code' => $countryCode,
             'country_name' => $countryName,
             'name' => $name,

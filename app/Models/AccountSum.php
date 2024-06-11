@@ -5,28 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Account extends Model
+class AccountSum extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
 
     // Relations
-    public function category(): BelongsTo
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(AccountCategory::class, 'account_category_id');
+        return $this->belongsTo(Account::class);
     }
 
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
-    }
-
-    public function sums(): HasMany
-    {
-        return $this->hasMany(AccountSum::class);
     }
 }

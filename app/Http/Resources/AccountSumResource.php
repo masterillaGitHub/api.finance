@@ -3,12 +3,14 @@
 namespace App\Http\Resources;
 
 use App\Http\Resources\NormalizeResources\JsonResource;
-use App\Models\Currency as Model;
+use App\Models\AccountSum as Model;
 use Illuminate\Database\Query\Builder;
 
-class CurrencyResource extends JsonResource
+class AccountSumResource extends JsonResource
 {
     public static $wrap = null;
+
+    protected string $resourceName = 'sums';
 
     public function toArray($request): array
     {
@@ -16,8 +18,9 @@ class CurrencyResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'number_decimals' => $this->number_decimals
+            'balance' => $this->balance,
+            'account' => AccountResource::make($this->whenLoaded('account')),
+            'currency' => AccountResource::make($this->whenLoaded('currency')),
         ];
     }
 }

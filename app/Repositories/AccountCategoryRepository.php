@@ -37,6 +37,7 @@ class AccountCategoryRepository extends CoreRepository
             ->setAllowedIncludes([
                 'accounts',
                 'accounts.currency',
+                'accounts.sums.currency',
             ])
             ->setAllowedFilters([])
             ->get();
