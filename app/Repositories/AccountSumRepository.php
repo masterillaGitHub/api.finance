@@ -2,12 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Account as Model;
+use App\Models\AccountSum as Model;
 use Illuminate\Support\Collection;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class AccountRepository extends CoreRepository
+class AccountSumRepository extends CoreRepository
 {
     protected function getModelClass(): string
     {
@@ -35,11 +34,7 @@ class AccountRepository extends CoreRepository
         $model = $this->startConditions();
 
         return $this->builder($model::query())
-            ->setAllowedIncludes([
-                'category',
-                'currency',
-                'sums',
-            ])
+            ->setAllowedIncludes([])
             ->setAllowedFilters([])
             ->build();
 

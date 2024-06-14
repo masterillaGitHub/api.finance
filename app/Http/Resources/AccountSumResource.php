@@ -10,8 +10,6 @@ class AccountSumResource extends JsonResource
 {
     public static $wrap = null;
 
-    protected string $resourceName = 'sums';
-
     public function toArray($request): array
     {
         /** @var Model|Builder|JsonResource $this */
@@ -20,7 +18,7 @@ class AccountSumResource extends JsonResource
             'id' => $this->id,
             'balance' => $this->balance,
             'account' => AccountResource::make($this->whenLoaded('account')),
-            'currency' => AccountResource::make($this->whenLoaded('currency')),
+            'currency' => CurrencyResource::make($this->whenLoaded('currency')),
         ];
     }
 }
