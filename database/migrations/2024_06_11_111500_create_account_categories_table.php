@@ -34,10 +34,10 @@ return new class extends Migration
     private function addInitialData(): void
     {
         $data = collect([
-            'cash',
-            'bank',
-            'debt',
-            'other'
+            'Готівка',
+            'Банківський рахунок',
+            'Борг',
+            'Інший актив'
         ])
             ->map(fn(string $name) => ['name' => $name])
             ->toArray();

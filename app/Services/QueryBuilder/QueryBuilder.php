@@ -57,7 +57,7 @@ final class QueryBuilder
         return $this;
     }
 
-    public function get(): BaseBuilder
+    public function build(): BaseBuilder
     {
         return BaseBuilder::for($this->builder)
             ->allowedFields($this->allowedFields)
