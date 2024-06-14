@@ -17,7 +17,10 @@ class CurrencyResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'number_decimals' => $this->number_decimals
+            'symbol' => $this->symbol,
+            'alphabetic_code' => $this->alphabetic_code,
+            'numeric_code' => $this->numeric_code,
+            'number_decimals' => $this->number_decimals,
         ];
     }
 }
