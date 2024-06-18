@@ -34,7 +34,7 @@ class AccountSumRepository extends CoreRepository
         $model = $this->startConditions();
 
         return $this->builder($model::query())
-            ->setAllowedIncludes([])
+            ->setAllowedIncludes(['currency'])
             ->setAllowedFilters([])
             ->build();
 

@@ -46,14 +46,12 @@ class AccountSumService
     /**
      * @throws Throwable
      */
-    public function update(Model $model, array $data): Model
+    public function update(int $id, array $data): Model
     {
+        $model = Model::find($id);
+
         try {
             DB::beginTransaction();
-
-            if (Arr::has($data, 'relationships')) {
-                Arr::pull($data, 'relationships');
-            }
 
             $model->update($data);
 

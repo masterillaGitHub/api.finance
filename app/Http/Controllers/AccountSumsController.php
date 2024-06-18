@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AccountSum\StoreRequest as StoreRequest;
+use App\Http\Requests\AccountSum\UpdateRequest as UpdateRequest;
 use App\Services\AccountSumService as Service;
 use App\Http\Resources\AccountSumResource as Resource;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -34,6 +35,19 @@ class AccountSumsController extends Controller
         $data = $request->validated();
 
         $item = $this->service->store($data);
+        $item = $this->repository->whereId($item->id);
+
+        return Resource::make($item);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function update(UpdateRequest $request, int $id): Resource
+    {
+        $data = $request->validated();
+
+        $item = $this->service->update($id, $data);
         $item = $this->repository->whereId($item->id);
 
         return Resource::make($item);

@@ -14,7 +14,9 @@ Route::apiResources([
 Route::apiResource('account-categories', AccountCategoryController::class)
     ->only(['index']);
 Route::get('account-categories/main-page', [AccountCategoryController::class, 'mainPage']);
+
 Route::apiResource('currencies', CurrencyController::class)
     ->only(['index']);
+
 Route::apiResource('account-sums', AccountSumsController::class)
-    ->only(['store']);
+    ->only(['store', 'update']);

@@ -13,6 +13,10 @@ class AccountSum extends Model
 
     protected $guarded = false;
 
+    protected $casts = [
+        'balance' => 'integer'
+    ];
+
     // Relations
     public function account(): BelongsTo
     {
