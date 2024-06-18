@@ -22,7 +22,7 @@ class AccountCategoryRepository extends CoreRepository
                 $query->where('user_id', auth()->id());
             })
             ->with(['accounts' => function (Builder|HasMany $query) {
-                $query->with('sums')
+                $query->with(['sums.currency', 'category'])
                     ->where('user_id', auth()->id());
             }])
             ->get();

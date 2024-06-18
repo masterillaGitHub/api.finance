@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('account_id')->constrained();
             $table->foreignId('currency_id')->constrained();
-            $table->unsignedInteger('balance')->default(0);
+            $table->integer('balance')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

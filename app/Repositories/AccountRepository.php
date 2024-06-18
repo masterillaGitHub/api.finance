@@ -37,10 +37,12 @@ class AccountRepository extends CoreRepository
         return $this->builder($model::query())
             ->setAllowedIncludes([
                 'category',
+                'category.accounts',
                 'currency',
                 'sums',
+                'sums.currency',
             ])
-            ->setAllowedFilters([])
+            ->setAllowedFilters(['id'])
             ->build();
 
     }
