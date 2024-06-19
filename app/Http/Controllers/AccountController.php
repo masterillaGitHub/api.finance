@@ -9,6 +9,7 @@ use App\Http\Requests\Account\UpdateRequest as UpdateRequest;
 use App\Services\AccountService as Service;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
 use App\Models\Account;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class AccountController extends Controller
@@ -67,5 +68,16 @@ class AccountController extends Controller
         $account->delete();
 
         return response()->noContent();
+    }
+
+    public function balanceTotal(): JsonResponse
+    {
+        $balanceTotal = Account::query()
+            ->withSum('sums', 'balance')
+            ->where('user_id', auth()->id())
+            ->get()
+            ->sum('sums_sum_balance');
+
+        return $this->responseJsonData($balanceTotal);
     }
 }
