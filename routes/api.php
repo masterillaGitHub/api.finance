@@ -7,8 +7,7 @@ Route::middleware(['auth:sanctum'])->get('/auth/user', function (Request $reques
     return $request->user();
 });
 
-Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::prefix('v1')
-        ->name('v1.')
-        ->group(base_path('routes/api/v1.php'));
-});
+Route::middleware(['auth:sanctum'])
+    ->prefix('v1')
+    ->name('v1.')
+    ->group(base_path('routes/api/v1.php'));

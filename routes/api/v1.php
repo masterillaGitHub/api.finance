@@ -7,16 +7,24 @@ use App\Http\Controllers\AccountSumsController;
 use App\Http\Controllers\CurrencyController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResources([
-    'accounts' => AccountController::class,
-]);
+// Accounts
+Route::prefix('accounts')
+    ->name('accounts.')
+    ->controller(AccountController::class)
+    ->group(base_path('routes/api/v1/accounts.php'));
+Route::apiResource('accounts', AccountController::class);
 
+
+// Account categories
 Route::apiResource('account-categories', AccountCategoryController::class)
     ->only(['index']);
 Route::get('account-categories/main-page', [AccountCategoryController::class, 'mainPage']);
 
+
+// Currencies
 Route::apiResource('currencies', CurrencyController::class)
     ->only(['index']);
 
+// Account sums
 Route::apiResource('account-sums', AccountSumsController::class)
     ->only(['store', 'update']);
