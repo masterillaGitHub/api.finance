@@ -4,5 +4,4 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/balance-total', 'balanceTotal')
-    ->name('balance-total');
+Route::get('/balance-total', 'balanceTotal')->name('balance-total');

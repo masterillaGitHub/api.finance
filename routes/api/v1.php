@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountCategoryController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountSumsController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\TransactionCategoryController;
 use Illuminate\Support\Facades\Route;
 
 // Accounts
@@ -28,3 +29,6 @@ Route::apiResource('currencies', CurrencyController::class)
 // Account sums
 Route::apiResource('account-sums', AccountSumsController::class)
     ->only(['store', 'update']);
+
+// Transaction categories
+Route::apiResource('transaction-categories', TransactionCategoryController::class);
