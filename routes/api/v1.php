@@ -6,6 +6,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountSumsController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransactionCategoryController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 // Accounts
@@ -32,3 +33,6 @@ Route::apiResource('account-sums', AccountSumsController::class)
 
 // Transaction categories
 Route::apiResource('transaction-categories', TransactionCategoryController::class);
+
+// Transactions
+Route::apiResource('transactions', TransactionController::class);
