@@ -25,4 +25,9 @@ class TransactionCategory extends Model
     {
         return $this->hasMany(TransactionCategory::class,'parent_id', 'id' );
     }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'category_id');
+    }
 }

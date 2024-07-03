@@ -49,10 +49,12 @@ class TransactionCategoryRepository extends CoreRepository
         return $this->builder($model::query())
             ->setAllowedIncludes([
                 'children',
-                'parent'
+                'parent',
+                'transactions',
             ])
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
+                AllowedFilter::exact('type_id'),
             ])
             ->build();
 

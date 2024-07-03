@@ -21,6 +21,7 @@ class TransactionCategoryResource extends JsonResource
             'type' => TransactionTypeResource::make($this->whenLoaded('type')),
             'parent' => TransactionCategoryResource::make($this->whenLoaded('parent')),
             'children' => TransactionCategoryResource::collection($this->whenLoaded('children')),
+            'transactions' => TransactionResource::collection($this->whenLoaded('transactions')),
         ];
     }
 }
