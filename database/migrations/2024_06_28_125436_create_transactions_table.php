@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('input_type', ['auto', 'manual'])->default('manual');
             $table->bigInteger('amount');
             $table->string('note', 400)->nullable();
-            $table->timestamp('transaction_at')->nullable();
+            $table->timestamp('transaction_at');
 
             $table->timestamps();
             $table->softDeletes();
