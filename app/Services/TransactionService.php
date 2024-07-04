@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionType;
 use App\Models\Transaction as Model;
 use Exception;
 use Illuminate\Support\Arr;
@@ -38,6 +39,12 @@ class TransactionService
                 if (Arr::has($relationships, 'currency')) {
                     $data['currency_id'] = $relationships['currency'];
                 }
+            }
+
+            $type = TransactionType::from($data['type_id']);
+
+            if ($type->isExpense()) {
+                $data['amount'] *= -1;
             }
 
             $cell = Model::firstOrCreate($data);
