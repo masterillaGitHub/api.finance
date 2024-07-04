@@ -51,11 +51,12 @@ class TransactionFactory extends Factory
             'currency_id' => $currencyId,
             'transfer_transaction_id' => null,
             'amount' => $this->getAmount(),
-            'note' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
-            'transaction_at' => $this->faker->boolean(10)
+            'description' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
+            'note' => $this->faker->boolean(50) ? $this->faker->sentence() : null,
+            'accrual_at' => $this->faker->boolean(10)
                 ? $this->faker->dateTimeBetween('-1 months')
                 : null,
-            'created_at' => $this->faker->dateTimeBetween('-1 years'),
+            'transaction_at' => $this->faker->dateTimeBetween('-1 years'),
         ];
     }
 

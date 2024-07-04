@@ -23,7 +23,7 @@ class TransactionRepository extends CoreRepository
     {
         return $this->query()
             ->where('user_id', auth()->id())
-            ->simplePaginate(15);
+            ->simplePaginate(40);
     }
 
     public function whereId(int $id): ?Model
@@ -42,7 +42,7 @@ class TransactionRepository extends CoreRepository
         $model = $this->startConditions();
 
         return $this->builder($model::query())
-            ->setDefaultSorts(['-created_at'])
+            ->setDefaultSorts(['-transaction_at'])
             ->setAllowedIncludes([
                 'type',
                 'account',

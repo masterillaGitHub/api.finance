@@ -21,7 +21,9 @@ return new class extends Migration
             $table->foreignId('transfer_transaction_id')->nullable()->constrained('transactions');
             $table->enum('input_type', ['auto', 'manual'])->default('manual');
             $table->bigInteger('amount');
+            $table->string('description', 400)->nullable();
             $table->string('note', 400)->nullable();
+            $table->timestamp('accrual_at')->nullable();
             $table->timestamp('transaction_at');
 
             $table->timestamps();

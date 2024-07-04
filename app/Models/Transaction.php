@@ -14,6 +14,7 @@ class Transaction extends Model
 
     protected $guarded = false;
     protected $casts = [
+        'accrual_at' => 'datetime',
         'created_at' => 'datetime',
         'transaction_at' => 'datetime',
         'amount' => 'integer',
