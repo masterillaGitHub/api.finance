@@ -28,4 +28,11 @@ class AccountCategoryController extends Controller
 
         return Resource::collection($items);
     }
+
+    public function transactionPage(): AnonymousResourceCollection
+    {
+        $items = $this->repository->transactionPage();
+
+        return Resource::collection($items);
+    }
 }

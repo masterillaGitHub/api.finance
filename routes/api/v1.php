@@ -18,9 +18,12 @@ Route::apiResource('accounts', AccountController::class);
 
 
 // Account categories
+Route::prefix('account-categories')
+    ->name('account-categories.')
+    ->controller(AccountCategoryController::class)
+    ->group(base_path('routes/api/v1/account-categories.php'));
 Route::apiResource('account-categories', AccountCategoryController::class)
     ->only(['index']);
-Route::get('account-categories/main-page', [AccountCategoryController::class, 'mainPage']);
 
 
 // Currencies

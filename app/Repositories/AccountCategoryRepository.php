@@ -28,6 +28,18 @@ class AccountCategoryRepository extends CoreRepository
             ->get();
     }
 
+    public function transactionPage(): Collection
+    {
+        return $this->query()
+            ->whereHas('accounts', function (Builder $query) {
+                $query->where('user_id', auth()->id());
+            })
+            ->with(['accounts' => function (Builder|HasMany $query) {
+                $query->where('user_id', auth()->id());
+            }])
+            ->get();
+    }
+
     public function get(): Collection
     {
         return $this->query()->get();
