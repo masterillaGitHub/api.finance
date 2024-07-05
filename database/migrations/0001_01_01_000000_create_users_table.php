@@ -38,10 +38,6 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-
-        if (config('database.add_initial_migration_data')) {
-            $this->addInitialData();
-        }
     }
 
     /**
@@ -52,15 +48,5 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-    }
-
-    private function addInitialData(): void
-    {
-        DB::table('users')->insert([
-            'name' => 'User',
-            'email' => 'user@test.com',
-            'password' => Hash::make('123123123'),
-            'created_at' => now(),
-        ]);
     }
 };
