@@ -18,11 +18,15 @@ return new class extends Migration
             $table->foreignId('account_id')->constrained();
             $table->foreignId('category_id')->constrained('transaction_categories');
             $table->foreignId('currency_id')->constrained();
-            $table->foreignId('transfer_transaction_id')->nullable()->constrained('transactions');
             $table->enum('input_type', ['auto', 'manual'])->default('manual');
             $table->bigInteger('amount');
             $table->string('description', 400)->nullable();
             $table->string('note', 400)->nullable();
+
+            $table->foreignId('to_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('to_currency_id')->nullable()->constrained('currencies');
+            $table->bigInteger('to_amount')->nullable();
+
             $table->timestamp('accrual_at')->nullable();
             $table->timestamp('transaction_at');
 

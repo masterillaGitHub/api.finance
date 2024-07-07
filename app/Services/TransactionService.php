@@ -39,11 +39,19 @@ class TransactionService
                 if (Arr::has($relationships, 'currency')) {
                     $data['currency_id'] = $relationships['currency'];
                 }
+
+                if (Arr::has($relationships, 'to_account')) {
+                    $data['to_account_id'] = $relationships['to_account'];
+                }
+
+                if (Arr::has($relationships, 'to_currency')) {
+                    $data['to_currency_id'] = $relationships['to_currency'];
+                }
             }
 
             $type = TransactionType::from($data['type_id']);
 
-            if ($type->isExpense()) {
+            if ($type->isExpense() || $type->isTransfer()) {
                 $data['amount'] *= -1;
             }
 
