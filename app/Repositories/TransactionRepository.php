@@ -48,6 +48,8 @@ class TransactionRepository extends CoreRepository
                 'account',
                 'category',
                 'currency',
+                'to_account',
+                'to_currency',
             ])
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),

@@ -36,12 +36,22 @@ class Transaction extends Model
         return $this->belongsTo(Account::class);
     }
 
+    public function to_account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class, 'category_id');
     }
 
     public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    public function to_currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
