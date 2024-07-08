@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransactionCreated;
 use App\Http\Requests\Transaction\StoreRequest as StoreRequest;
 use App\Http\Requests\Transaction\UpdateRequest as UpdateRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -37,6 +38,9 @@ class TransactionController extends Controller
         $data = $request->validated();
 
         $item = $this->service->store($data);
+
+        TransactionCreated::dispatch($item);
+
         $item = $this->repository->whereId($item->id);
 
         return Resource::make($item);
