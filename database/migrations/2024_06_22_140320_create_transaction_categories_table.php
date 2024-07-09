@@ -41,8 +41,8 @@ return new class extends Migration
         DB::table('transaction_categories')->insert([
             ['name' => 'Ініціація балансу', 'type_id' => null],
             ['name' => 'Корекція балансу', 'type_id' => null],
-            ['name' => 'Витрата без категорії', 'type_id' => 1],
-            ['name' => 'Дохід без категорії', 'type_id' => 2],
+            ['name' => 'Без категорії', 'type_id' => 1],
+            ['name' => 'Без категорії', 'type_id' => 2],
             ['name' => 'Переказ', 'type_id' => 3],
         ]);
     }
