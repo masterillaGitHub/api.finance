@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\TransactionCategory as Model;
+use App\Services\QueryBuilder\Filters\FiltersUserId;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -55,6 +56,7 @@ class TransactionCategoryRepository extends CoreRepository
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('type_id'),
+                AllowedFilter::custom('user_id', new FiltersUserId())
             ])
             ->build();
 
