@@ -3,16 +3,10 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Models\User;
+use App\Enums\TransactionType;
 
 final class DefaultTransactionCategory
 {
-
-    public function createToUser(User $user): void
-    {
-        collect($this->all())
-            ->map(fn(array $category) => [...$category, 'user_id' => $user->id])->dd();
-    }
 
     public function all(): array
     {
@@ -21,34 +15,38 @@ final class DefaultTransactionCategory
 
     public function expenses(): array
     {
+        $typeId = TransactionType::EXPENSE->value;
+
         return [
-            ['name' => 'Навчання', 'type_id' => 1],
-            ['name' => 'Подорож', 'type_id' => 1],
-            ['name' => 'Транспорт', 'type_id' => 1],
-            ['name' => "Здоров'я", 'type_id' => 1],
-            ['name' => 'Рахунки', 'type_id' => 1],
-            ['name' => 'Одяг', 'type_id' => 1],
-            ['name' => 'Їжа', 'type_id' => 1, 'children' => [
-                ['name' => 'Продукти', 'type_id' => 1],
-                ['name' => 'Ресторани', 'type_id' => 1],
-                ['name' => 'Фастфуд', 'type_id' => 1],
+            ['name' => 'Навчання', 'type_id' => $typeId],
+            ['name' => 'Подорож', 'type_id' => $typeId],
+            ['name' => 'Транспорт', 'type_id' => $typeId],
+            ['name' => "Здоров'я", 'type_id' => $typeId],
+            ['name' => 'Рахунки', 'type_id' => $typeId],
+            ['name' => 'Одяг', 'type_id' => $typeId],
+            ['name' => 'Їжа', 'type_id' => $typeId, 'children' => [
+                ['name' => 'Продукти', 'type_id' => $typeId],
+                ['name' => 'Ресторани', 'type_id' => $typeId],
+                ['name' => 'Фастфуд', 'type_id' => $typeId],
             ]],
-            ['name' => 'Розваги', 'type_id' => 1],
-            ['name' => 'Тварини', 'type_id' => 1],
-            ['name' => 'Благодійність', 'type_id' => 1],
-            ['name' => 'Електроніка', 'type_id' => 1],
-            ['name' => 'Інше', 'type_id' => 1],
+            ['name' => 'Розваги', 'type_id' => $typeId],
+            ['name' => 'Тварини', 'type_id' => $typeId],
+            ['name' => 'Благодійність', 'type_id' => $typeId],
+            ['name' => 'Електроніка', 'type_id' => $typeId],
+            ['name' => 'Інше', 'type_id' => $typeId],
         ];
     }
 
     public function incomes(): array
     {
+        $typeId = TransactionType::INCOME->value;
+
         return [
-            ['name' => 'Зарплата', 'type_id' => 2],
-            ['name' => 'Підробіток', 'type_id' => 2],
-            ['name' => 'Продаж', 'type_id' => 2],
-            ['name' => 'Подарунки', 'type_id' => 2],
-            ['name' => 'Інше', 'type_id' => 2],
+            ['name' => 'Зарплата', 'type_id' => $typeId],
+            ['name' => 'Підробіток', 'type_id' => $typeId],
+            ['name' => 'Продаж', 'type_id' => $typeId],
+            ['name' => 'Подарунки', 'type_id' => $typeId],
+            ['name' => 'Інше', 'type_id' => $typeId],
         ];
     }
 }
