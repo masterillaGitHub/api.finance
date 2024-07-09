@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\AccountSum\AccountSumCreated;
+use App\Events\AccountSum\AccountSumUpdated;
 use App\Models\AccountSum as Model;
 use Exception;
 use Illuminate\Support\Arr;
@@ -30,7 +32,9 @@ class AccountSumService
                 }
             }
 
-            $cell = Model::firstOrCreate($data);
+            $model = Model::create($data);
+
+            AccountSumCreated::dispatch($model, $data);
 
             DB::commit();
         }
@@ -40,7 +44,7 @@ class AccountSumService
             throw new Exception($e->getMessage());
         }
 
-        return $cell;
+        return $model;
     }
 
     /**
@@ -53,7 +57,11 @@ class AccountSumService
         try {
             DB::beginTransaction();
 
-            $model->update($data);
+            $model->fill($data);
+
+            AccountSumUpdated::dispatch($model, $data);
+
+            $model->save();
 
             DB::commit();
         }

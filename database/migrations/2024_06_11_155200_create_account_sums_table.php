@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('balance')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['account_id', 'currency_id']);
         });
     }
 

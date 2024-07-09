@@ -49,7 +49,6 @@ class TransactionFactory extends Factory
             'category_id' => $category,
             'account_id' => $account,
             'currency_id' => $currencyId,
-            'transfer_transaction_id' => null,
             'amount' => $this->getAmount(),
             'description' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
             'note' => $this->faker->boolean(50) ? $this->faker->sentence() : null,

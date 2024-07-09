@@ -39,6 +39,7 @@ return new class extends Migration
     private function addInitialData(): void
     {
         DB::table('transaction_categories')->insert([
+            ['name' => 'Ініціація балансу', 'type_id' => null],
             ['name' => 'Корекція балансу', 'type_id' => null],
             ['name' => 'Витрата без категорії', 'type_id' => 1],
             ['name' => 'Дохід без категорії', 'type_id' => 2],
