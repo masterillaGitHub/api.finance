@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\Amount;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +19,15 @@ class Transaction extends Model
         'accrual_at' => 'datetime',
         'created_at' => 'datetime',
         'transaction_at' => 'datetime',
-        'amount' => 'integer',
     ];
+
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => (float) ($value / 100),
+            set: fn (float|int $value) => (int) ($value * 100),
+        );
+    }
 
     // Relations
     public function user(): BelongsTo

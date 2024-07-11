@@ -78,6 +78,8 @@ class AccountController extends Controller
             ->get()
             ->sum('sums_sum_balance');
 
+        $balanceTotal /= 100;
+
         return $this->responseJsonData($balanceTotal);
     }
 }

@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'balance' => 'integer|required',
+            'balance' => 'numeric|required',
             'relationships' => ['array', 'nullable'],
             'relationships.account' => ['integer', 'required', 'exists:accounts,id'],
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],

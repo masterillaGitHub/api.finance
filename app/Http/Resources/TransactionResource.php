@@ -17,7 +17,7 @@ class TransactionResource extends JsonResource
         return [
             'id' => $this->id,
             'input_type' => $this->input_type,
-            'amount' => (int) $this->amount,
+            'amount' => $this->amount,
             'note' => $this->note,
             'description' => $this->description,
             'accrual_at' => $this->accrual_at?->format('d.m.Y H:i:s'),

@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'integer|required',
+            'amount' => 'numeric|required',
             'note' => 'string|nullable',
             'transaction_at' => 'date|nullable',
             'relationships' => ['array', 'nullable'],
