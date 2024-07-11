@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('type_id')->nullable()->constrained('transaction_types');
             $table->foreignId('parent_id')->nullable()->constrained('transaction_categories');
-            $table->string('name');
+            $table->string('name', 100);
+            $table->string('icon',100);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -39,11 +40,11 @@ return new class extends Migration
     private function addInitialData(): void
     {
         DB::table('transaction_categories')->insert([
-            ['name' => 'Ініціація балансу', 'type_id' => null],
-            ['name' => 'Корекція балансу', 'type_id' => null],
-            ['name' => 'Без категорії', 'type_id' => 1],
-            ['name' => 'Без категорії', 'type_id' => 2],
-            ['name' => 'Переказ', 'type_id' => 3],
+            ['name' => 'Ініціація балансу', 'icon' => 'mdi-cash-plus', 'type_id' => null],
+            ['name' => 'Корекція балансу', 'icon' => 'mdi-cash-edit', 'type_id' => null],
+            ['name' => 'Без категорії', 'icon' => 'mdi-help', 'type_id' => 1],
+            ['name' => 'Без категорії', 'icon' => 'mdi-help', 'type_id' => 2],
+            ['name' => 'Переказ', 'icon' => 'mdi-swap-horizontal', 'type_id' => 3],
         ]);
     }
 };

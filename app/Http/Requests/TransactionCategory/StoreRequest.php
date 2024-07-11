@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
+            'icon' => 'string|required',
             'relationships' => ['array', 'nullable'],
             'relationships.type' => ['integer', 'required', 'exists:transaction_types,id'],
             'relationships.parent' => [

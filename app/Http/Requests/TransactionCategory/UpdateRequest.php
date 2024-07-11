@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
+            'icon' => 'string|required',
             'relationships' => ['array', 'nullable'],
             'relationships.parent' => [
                 'integer',

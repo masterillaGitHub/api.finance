@@ -28,6 +28,7 @@ class TransactionCategoryFactory extends Factory
             'parent_id' => null,
             'type_id' => $typeId,
             'name' => $name,
+            'icon' => 'mdi-format-list-bulleted-type'
         ];
     }
 
