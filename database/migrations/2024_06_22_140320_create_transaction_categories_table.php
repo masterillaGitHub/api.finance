@@ -40,7 +40,7 @@ return new class extends Migration
     private function addInitialData(): void
     {
         DB::table('transaction_categories')->insert([
-            ['name' => 'Ініціація балансу', 'icon' => 'mdi-cash-plus', 'type_id' => null],
+            ['name' => 'Ініціація балансу', 'icon' => 'mdi-wallet-plus-outline', 'type_id' => null],
             ['name' => 'Корекція балансу', 'icon' => 'mdi-cash-edit', 'type_id' => null],
             ['name' => 'Без категорії', 'icon' => 'mdi-help', 'type_id' => 1],
             ['name' => 'Без категорії', 'icon' => 'mdi-help', 'type_id' => 2],
