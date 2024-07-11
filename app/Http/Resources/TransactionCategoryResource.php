@@ -17,6 +17,7 @@ class TransactionCategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'type_id' => $this->type_id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'type' => TransactionTypeResource::make($this->whenLoaded('type')),
             'parent' => TransactionCategoryResource::make($this->whenLoaded('parent')),

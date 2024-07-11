@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
             'relationships' => ['array', 'nullable'],
             'relationships.parent' => [
                 'integer',
-                'required',
+                'nullable',
                 Rule::exists('transaction_categories', 'id')
                     ->where(fn (Builder $query) =>
                         $query->whereNull('parent_id')

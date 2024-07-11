@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'relationships.type' => ['integer', 'required', 'exists:transaction_types,id'],
             'relationships.parent' => [
                 'integer',
-                'required',
+                'nullable',
                 Rule::exists('transaction_categories', 'id')
                     ->where(fn (Builder $query) =>
                         $query->whereNull('parent_id')

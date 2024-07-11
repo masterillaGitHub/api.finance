@@ -49,7 +49,7 @@ class TransactionCategoryRepository extends CoreRepository
 
         return $this->builder($model::query())
             ->setAllowedIncludes([
-                'children',
+                'children.parent',
                 'parent',
                 'transactions',
             ])

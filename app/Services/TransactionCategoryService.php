@@ -50,7 +50,9 @@ class TransactionCategoryService
      */
     public function update(int $id, array $data): Model
     {
-        $model = Model::query()->where('id', $id)->first();
+        $model = Model::query()
+            ->where('id', $id)
+            ->first();
 
         try {
             DB::beginTransaction();
