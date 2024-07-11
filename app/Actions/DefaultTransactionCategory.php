@@ -15,38 +15,56 @@ final class DefaultTransactionCategory
 
     public function expenses(): array
     {
-        $typeId = TransactionType::EXPENSE->value;
-
-        return [
-            ['name' => 'Навчання', 'type_id' => $typeId],
-            ['name' => 'Подорож', 'type_id' => $typeId],
-            ['name' => 'Транспорт', 'type_id' => $typeId],
-            ['name' => "Здоров'я", 'type_id' => $typeId],
-            ['name' => 'Рахунки', 'type_id' => $typeId],
-            ['name' => 'Одяг', 'type_id' => $typeId],
-            ['name' => 'Їжа', 'type_id' => $typeId, 'children' => [
-                ['name' => 'Продукти', 'type_id' => $typeId],
-                ['name' => 'Ресторани', 'type_id' => $typeId],
-                ['name' => 'Фастфуд', 'type_id' => $typeId],
-            ]],
-            ['name' => 'Розваги', 'type_id' => $typeId],
-            ['name' => 'Тварини', 'type_id' => $typeId],
-            ['name' => 'Благодійність', 'type_id' => $typeId],
-            ['name' => 'Електроніка', 'type_id' => $typeId],
-            ['name' => 'Інше', 'type_id' => $typeId],
+        $list = [
+            ['name' => 'Авто'],
+            ['name' => 'Навчання'],
+            ['name' => 'Подорож'],
+            ['name' => 'Транспорт'],
+            ['name' => "Краса та Здоров'я"],
+            ['name' => 'Рахунки'],
+            ['name' => 'Комуналка та інтернет'],
+            ['name' => 'Поповнення мобільного'],
+            ['name' => 'Одяг та взуття'],
+            ['name' => 'Кафе та ресторани'],
+            ['name' => 'Продукти та супермаркети'],
+            ['name' => 'Розваги та спорт'],
+            ['name' => 'Книги'],
+            ['name' => 'Тварини'],
+            ['name' => 'Благодійність'],
+            ['name' => 'Електроніка'],
+            ['name' => 'Інше'],
         ];
+
+        return $this->addTypesId($list, TransactionType::EXPENSE);
     }
 
     public function incomes(): array
     {
-        $typeId = TransactionType::INCOME->value;
-
-        return [
-            ['name' => 'Зарплата', 'type_id' => $typeId],
-            ['name' => 'Підробіток', 'type_id' => $typeId],
-            ['name' => 'Продаж', 'type_id' => $typeId],
-            ['name' => 'Подарунки', 'type_id' => $typeId],
-            ['name' => 'Інше', 'type_id' => $typeId],
+        $list = [
+            ['name' => 'Зарплата'],
+            ['name' => 'Підробіток'],
+            ['name' => 'Продаж'],
+            ['name' => 'Подарунки'],
+            ['name' => 'Інше'],
         ];
+
+        return $this->addTypesId($list, TransactionType::INCOME);
+    }
+
+    private function addTypesId(array $items, TransactionType $type): array
+    {
+        return array_map(fn (array $item) => $this->addTypeId($item, $type), $items);
+    }
+
+    private function addTypeId(array $item, TransactionType $type): array
+    {
+        if (isset($item['children'])) {
+            $item['children'] = $this->addTypeId($item['children'], $type);
+        }
+        else {
+            $item['type_id'] = $type->value;
+        }
+
+        return $item;
     }
 }
