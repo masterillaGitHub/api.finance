@@ -17,6 +17,7 @@ class AccountResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->whenHas('name', $this->name),
+            'icon' => $this->whenHas('icon', $this->icon),
             'input_type' => $this->whenHas('input_type', $this->input_type),
             'bank_name' => $this->whenHas('bank_name', $this->bank_name),
             'credit_limit' => $this->whenHas('credit_limit', $this->credit_limit),

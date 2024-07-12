@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('currency_id')->constrained('currencies');
             $table->enum('input_type', ['auto', 'manual'])->default('manual');
             $table->string('name', 100);
+            $table->string('icon', 100);
             $table->string('bank_id', 100)->nullable();
             $table->string('bank_name', 100)->nullable();
             $table->unsignedInteger('credit_limit')->nullable();
