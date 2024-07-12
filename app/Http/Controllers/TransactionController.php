@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TransactionCreated;
+use App\Events\TransactionDestroyed;
 use App\Http\Requests\Transaction\StoreRequest as StoreRequest;
 use App\Http\Requests\Transaction\UpdateRequest as UpdateRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -68,7 +69,10 @@ class TransactionController extends Controller
 
     public function destroy(Transaction $transaction): Response
     {
+        $item = $transaction;
         $transaction->delete();
+
+        TransactionDestroyed::dispatch($item);
 
         return response()->noContent();
     }

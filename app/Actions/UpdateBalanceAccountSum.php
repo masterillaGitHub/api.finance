@@ -8,7 +8,23 @@ use App\Models\AccountSum;
 final class UpdateBalanceAccountSum
 {
 
-    public function update(int $accountId, int $currencyId, int $amount): void
+    public function toAdd(int $accountId, int $currencyId, int $amount): void
+    {
+        $accountSum = $this->getAccountSum($accountId, $currencyId);
+
+        $accountSum->balance = $accountSum->balance + $amount;
+        $accountSum->save();
+    }
+
+    public function toRemove(int $accountId, int $currencyId, int $amount): void
+    {
+        $accountSum = $this->getAccountSum($accountId, $currencyId);
+
+        $accountSum->balance = $accountSum->balance - $amount;
+        $accountSum->save();
+    }
+
+    private function getAccountSum(int $accountId, int $currencyId): AccountSum
     {
         $accountSum = $this->loadAccountSum($accountId, $currencyId);
 
@@ -16,8 +32,7 @@ final class UpdateBalanceAccountSum
             $accountSum = $this->getNewAccountSum($accountId, $currencyId);
         }
 
-        $accountSum->balance = $accountSum->balance + $amount;
-        $accountSum->save();
+        return $accountSum;
     }
 
     private function loadAccountSum(int $accountId, int $currencyId): ?AccountSum

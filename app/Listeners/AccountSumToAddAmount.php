@@ -9,7 +9,7 @@ use App\Models\Transaction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class AccountAmountUpdate
+class AccountSumToAddAmount
 {
     private TransactionType $type;
     private UpdateBalanceAccountSum $accountSum;
@@ -29,14 +29,14 @@ class AccountAmountUpdate
     {
         $this->init($event->transaction);
 
-        $this->accountSum->update(
+        $this->accountSum->toAdd(
             $event->transaction->account_id,
             $event->transaction->currency_id,
             $event->transaction->amount,
         );
 
         if ($this->type->isTransfer()) {
-            $this->accountSum->update(
+            $this->accountSum->toAdd(
                 $event->transaction->to_account_id,
                 $event->transaction->to_currency_id,
                 $event->transaction->to_amount,
