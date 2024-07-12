@@ -55,7 +55,7 @@ class TransactionService
                 $data['amount'] *= -1;
             }
 
-            $cell = Model::firstOrCreate($data);
+            $cell = Model::create($data);
 
             DB::commit();
         }

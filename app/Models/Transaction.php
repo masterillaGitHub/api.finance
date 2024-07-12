@@ -29,6 +29,14 @@ class Transaction extends Model
         );
     }
 
+    protected function toAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?int $value) => !!$value ? (float) ($value / 100) : null,
+            set: fn (float|int $value) => (int) ($value * 100),
+        );
+    }
+
     // Relations
     public function user(): BelongsTo
     {

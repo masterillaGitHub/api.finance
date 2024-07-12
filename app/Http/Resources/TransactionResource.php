@@ -24,7 +24,7 @@ class TransactionResource extends JsonResource
             'transaction_at' => $this->transaction_at->format('d.m.Y H:i:s'),
             'transaction_at_date' => $this->transaction_at->format('d.m.Y'),
             'transaction_at_timestamp' => $this->transaction_at->timestamp,
-            'to_amount' => (int) $this->to_amount,
+            'to_amount' => (float) $this->to_amount,
             'user' => UserResource::make($this->whenLoaded('user')),
             'type' => TransactionTypeResource::make($this->whenLoaded('type')),
             'account' => AccountResource::make($this->whenLoaded('account')),

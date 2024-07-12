@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'note' => 'string|nullable',
             'transaction_at' => 'date|nullable',
             'account_transfer_id' => 'integer|nullable|exists:accounts,id',
-            'to_amount' => ['integer', $requiredIfTypeTransfer],
+            'to_amount' => ['numeric', $requiredIfTypeTransfer],
 
             'relationships' => ['array', 'nullable'],
             'relationships.type' => ['integer', 'required', 'exists:transaction_types,id'],
