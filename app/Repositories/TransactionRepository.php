@@ -53,6 +53,7 @@ class TransactionRepository extends CoreRepository
             ])
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
+                AllowedFilter::exact('account_id'),
             ])
             ->build();
 
