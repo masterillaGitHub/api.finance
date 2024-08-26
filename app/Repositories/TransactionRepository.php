@@ -23,6 +23,7 @@ class TransactionRepository extends CoreRepository
     {
         return $this->query()
             ->where('user_id', auth()->id())
+            ->orderByDesc('transaction_at')
             ->simplePaginate(40);
     }
 

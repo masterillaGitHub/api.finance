@@ -21,39 +21,7 @@ class TransactionService
         try {
             DB::beginTransaction();
 
-            if (Arr::has($data, 'relationships')) {
-                $relationships = Arr::pull($data, 'relationships');
-
-                if (Arr::has($relationships, 'type')) {
-                    $data['type_id'] = $relationships['type'];
-                }
-
-                if (Arr::has($relationships, 'account')) {
-                    $data['account_id'] = $relationships['account'];
-                }
-
-                if (Arr::has($relationships, 'category')) {
-                    $data['category_id'] = $relationships['category'];
-                }
-
-                if (Arr::has($relationships, 'currency')) {
-                    $data['currency_id'] = $relationships['currency'];
-                }
-
-                if (Arr::has($relationships, 'to_account')) {
-                    $data['to_account_id'] = $relationships['to_account'];
-                }
-
-                if (Arr::has($relationships, 'to_currency')) {
-                    $data['to_currency_id'] = $relationships['to_currency'];
-                }
-            }
-
-            $type = TransactionType::from($data['type_id']);
-
-            if ($type->isExpense() || $type->isTransfer()) {
-                $data['amount'] *= -1;
-            }
+            $data = $this->preparationData($data);
 
             $cell = Model::create($data);
 
@@ -78,25 +46,7 @@ class TransactionService
         try {
             DB::beginTransaction();
 
-            if (Arr::has($data, 'relationships')) {
-                $relationships = Arr::pull($data, 'relationships');
-
-                if (Arr::has($relationships, 'type')) {
-                    $data['type_id'] = $relationships['type'];
-                }
-
-                if (Arr::has($relationships, 'account')) {
-                    $data['account_id'] = $relationships['account'];
-                }
-
-                if (Arr::has($relationships, 'category')) {
-                    $data['category_id'] = $relationships['category'];
-                }
-
-                if (Arr::has($relationships, 'currency')) {
-                    $data['currency_id'] = $relationships['currency'];
-                }
-            }
+            $data = $this->preparationData($data);
 
             $model->update($data);
 
@@ -109,5 +59,46 @@ class TransactionService
         }
 
         return $model;
+    }
+
+    private function preparationData(array $data): array
+    {
+
+
+        if (Arr::has($data, 'relationships')) {
+            $relationships = Arr::pull($data, 'relationships');
+
+            if (Arr::has($relationships, 'type')) {
+                $data['type_id'] = $relationships['type'];
+            }
+
+            if (Arr::has($relationships, 'account')) {
+                $data['account_id'] = $relationships['account'];
+            }
+
+            if (Arr::has($relationships, 'category')) {
+                $data['category_id'] = $relationships['category'];
+            }
+
+            if (Arr::has($relationships, 'currency')) {
+                $data['currency_id'] = $relationships['currency'];
+            }
+
+            if (Arr::has($relationships, 'to_account')) {
+                $data['to_account_id'] = $relationships['to_account'];
+            }
+
+            if (Arr::has($relationships, 'to_currency')) {
+                $data['to_currency_id'] = $relationships['to_currency'];
+            }
+        }
+
+        $type = TransactionType::from($data['type_id']);
+
+        if ($type->isExpense() || $type->isTransfer()) {
+            $data['amount'] *= -1;
+        }
+
+        return $data;
     }
 }
