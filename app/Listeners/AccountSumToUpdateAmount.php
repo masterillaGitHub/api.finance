@@ -9,8 +9,8 @@ use App\Models\Transaction;
 
 class AccountSumToUpdateAmount
 {
-    private TransactionType $type;
     private UpdateBalanceAccountSum $accountSum;
+    private Transaction $t;
 
     /**
      * Create the event listener.
@@ -25,20 +25,65 @@ class AccountSumToUpdateAmount
      */
     public function handle(TransactionUpdated $event): void
     {
-        $t = $event->transaction;
-        $type = $this->getTransactionType($t);
+        $this->t = $event->transaction;
+        $type = $this->getTransactionType($event->transaction);
 
-        if ($t->isDirty(['amount', 'to_amount'])) {
-            $differenceOfAmount = $t->getAttribute('amount') - $t->getOriginal('amount');
+        $this->updateAccountSum(
+            'account_id',
+            'currency_id',
+            'amount'
+        );
 
-            $this->accountSum->toAdd($t->account_id, $t->currency_id, $differenceOfAmount);
-
-            if ($type->isTransfer()) {
-                $differenceOfToAmount = $t->getAttribute('to_amount') - $t->getOriginal('to_amount');
-
-                $this->accountSum->toAdd($t->to_account_id, $t->to_currency_id, $differenceOfToAmount);
-            }
+        if ($type->isTransfer()) {
+            $this->updateAccountSum(
+                'to_account_id',
+                'to_currency_id',
+                'to_amount'
+            );
         }
+    }
+
+    private function updateAccountSum(
+        string $accountFiledName,
+        string $currencyFiledName,
+        string $amountFiledName
+    ): void
+    {
+        if ($this->t->isClean([$accountFiledName, $currencyFiledName, $amountFiledName])) {
+            return;
+        }
+
+        $originAccountId = $this->t->getOriginal($accountFiledName);
+        $newAccountId = $this->t->getAttribute($accountFiledName);
+
+        $originCurrencyId = $this->t->getOriginal($currencyFiledName);
+        $newCurrencyId = $this->t->getAttribute($currencyFiledName);
+
+        if ($this->isAccountEqual($accountFiledName) && $this->isCurrencyEqual($currencyFiledName)) {
+            $amount = $this->getDifferenceAmount($amountFiledName);
+        }
+        else {
+            $amount = $this->t->getAttribute($amountFiledName);
+
+            $this->accountSum->toRemove($originAccountId, $originCurrencyId, $amount);
+        }
+
+        $this->accountSum->toAdd($newAccountId, $newCurrencyId, $amount);
+    }
+
+    private function isAccountEqual(string $filedName): bool
+    {
+        return $this->t->getOriginal($filedName) === $this->t->getAttribute($filedName);
+    }
+
+    private function isCurrencyEqual(string $filedName): bool
+    {
+        return $this->t->getOriginal($filedName) === $this->t->getAttribute($filedName);
+    }
+
+    private function getDifferenceAmount(string $filedName): int
+    {
+        return $this->t->getAttribute($filedName) - $this->t->getOriginal($filedName);
     }
 
     private function getTransactionType(Transaction $t): TransactionType
