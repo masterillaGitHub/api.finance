@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TransactionCreated;
-use App\Events\TransactionDestroyed;
+use App\Events\Transaction\TransactionCreated;
+use App\Events\Transaction\TransactionDestroyed;
 use App\Http\Requests\Transaction\StoreRequest as StoreRequest;
 use App\Http\Requests\Transaction\UpdateRequest as UpdateRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -57,11 +57,11 @@ class TransactionController extends Controller
     /**
      * @throws \Throwable
      */
-    public function update(UpdateRequest $request, int $id): Resource
+    public function update(UpdateRequest $request, Transaction $transaction): Resource
     {
         $data = $request->validated();
 
-        $item = $this->service->update($id, $data);
+        $item = $this->service->update($transaction, $data);
         $item = $this->repository->whereId($item->id);
 
         return Resource::make($item);

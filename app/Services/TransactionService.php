@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\TransactionType;
+use App\Events\Transaction\TransactionUpdated;
+use App\Models\Transaction;
 use App\Models\Transaction as Model;
 use Exception;
 use Illuminate\Support\Arr;
@@ -39,16 +41,18 @@ class TransactionService
     /**
      * @throws Throwable
      */
-    public function update(int $id, array $data): Model
+    public function update(Transaction $model, array $data): Model
     {
-        $model = Model::query()->where('id', $id)->first();
-
         try {
             DB::beginTransaction();
 
             $data = $this->preparationData($data);
 
-            $model->update($data);
+            $model->fill($data);
+
+            TransactionUpdated::dispatch($model, $data);
+
+            $model->save();
 
             DB::commit();
         }

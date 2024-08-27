@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Actions\UpdateBalanceAccountSum;
 use App\Enums\TransactionType;
-use App\Events\TransactionDestroyed;
+use App\Events\Transaction\TransactionDestroyed;
 use App\Models\Transaction;
 
 class AccountSumToRemoveAmount

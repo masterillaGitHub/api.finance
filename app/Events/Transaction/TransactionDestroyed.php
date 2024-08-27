@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Transaction;
 
-use App\Enums\TransactionType;
 use App\Models\Transaction;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TransactionCreated
+class TransactionDestroyed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

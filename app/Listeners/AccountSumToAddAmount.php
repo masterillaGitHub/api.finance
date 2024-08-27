@@ -4,10 +4,8 @@ namespace App\Listeners;
 
 use App\Actions\UpdateBalanceAccountSum;
 use App\Enums\TransactionType;
-use App\Events\TransactionCreated;
+use App\Events\Transaction\TransactionCreated;
 use App\Models\Transaction;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class AccountSumToAddAmount
 {
