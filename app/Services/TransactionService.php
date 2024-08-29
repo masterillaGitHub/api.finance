@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Enums\TransactionType;
+use App\Events\Transaction\TransactionCreated;
 use App\Events\Transaction\TransactionUpdated;
-use App\Models\Transaction;
 use App\Models\Transaction as Model;
 use Exception;
 use Illuminate\Support\Arr;
@@ -25,7 +25,9 @@ class TransactionService
 
             $data = $this->preparationData($data);
 
-            $cell = Model::create($data);
+            $item = Model::create($data);
+
+            TransactionCreated::dispatch($item);
 
             DB::commit();
         }
@@ -35,13 +37,13 @@ class TransactionService
             throw new Exception($e->getMessage());
         }
 
-        return $cell;
+        return $item;
     }
 
     /**
      * @throws Throwable
      */
-    public function update(Transaction $model, array $data): Model
+    public function update(Model $model, array $data): Model
     {
         try {
             DB::beginTransaction();
@@ -67,8 +69,6 @@ class TransactionService
 
     private function preparationData(array $data): array
     {
-
-
         if (Arr::has($data, 'relationships')) {
             $relationships = Arr::pull($data, 'relationships');
 

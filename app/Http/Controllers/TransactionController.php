@@ -40,8 +40,6 @@ class TransactionController extends Controller
 
         $item = $this->service->store($data);
 
-        TransactionCreated::dispatch($item);
-
         $item = $this->repository->whereId($item->id);
 
         return Resource::make($item);
