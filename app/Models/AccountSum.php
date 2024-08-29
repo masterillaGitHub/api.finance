@@ -18,14 +18,6 @@ class AccountSum extends Model
         'balance' => 'integer'
     ];
 
-    protected function balance(): Attribute
-    {
-        return Attribute::make(
-            get: fn (int $value) => (float) ($value / 100),
-            set: fn (float|int $value) => (int) ($value * 100),
-        );
-    }
-
     // Relations
     public function account(): BelongsTo
     {

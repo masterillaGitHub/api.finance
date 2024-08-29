@@ -97,12 +97,6 @@ class TransactionService
             }
         }
 
-        $type = TransactionType::from($data['type_id']);
-
-        if ($type->isExpense() || $type->isTransfer()) {
-            $data['amount'] *= -1;
-        }
-
         return $data;
     }
 }

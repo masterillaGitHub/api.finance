@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
         $requiredIfTypeTransfer = 'required_if:relationships.type,' . TransactionType::TRANSFER->value;
 
         return [
-            'amount' => 'numeric|required',
+            'amount' => 'integer|required',
             'note' => 'string|nullable',
             'transaction_at' => 'date|nullable',
             'account_transfer_id' => 'integer|nullable|exists:accounts,id',
