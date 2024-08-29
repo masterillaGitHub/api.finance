@@ -31,7 +31,7 @@ class AccountSumToUpdateAmount
         $this->updateAccountSum(
             'account_id',
             'currency_id',
-            'amount'
+            'amount',
         );
 
         if ($type->isTransfer()) {
@@ -46,7 +46,7 @@ class AccountSumToUpdateAmount
     private function updateAccountSum(
         string $accountFiledName,
         string $currencyFiledName,
-        string $amountFiledName
+        string $amountFiledName,
     ): void
     {
         if ($this->t->isClean([$accountFiledName, $currencyFiledName, $amountFiledName])) {
@@ -59,12 +59,15 @@ class AccountSumToUpdateAmount
         $originCurrencyId = $this->t->getOriginal($currencyFiledName);
         $newCurrencyId = $this->t->getAttribute($currencyFiledName);
 
-        if ($this->isAccountEqual($accountFiledName) && $this->isCurrencyEqual($currencyFiledName)) {
+        $amount = $this->t->getAttribute($amountFiledName);
+
+        // If only 'amount' was changed and 'account', 'currency' was not changed
+        if ($this->t->isDirty($amountFiledName) && $this->t->isClean([$accountFiledName, $currencyFiledName])) {
             $amount = $this->getDifferenceAmount($amountFiledName);
         }
-        else {
-            $amount = $this->t->getAttribute($amountFiledName);
 
+        // If 'account' or 'amount' was changed
+        if ($this->t->isDirty([$accountFiledName, $currencyFiledName])) {
             $this->accountSum->toRemove($originAccountId, $originCurrencyId, $amount);
         }
 
