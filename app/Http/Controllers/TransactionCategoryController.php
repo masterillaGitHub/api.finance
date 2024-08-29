@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionCategory\CategoryStepIndexRequest;
 use App\Http\Requests\TransactionCategory\StoreRequest as StoreRequest;
 use App\Http\Requests\TransactionCategory\UpdateRequest as UpdateRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -25,6 +26,14 @@ class TransactionCategoryController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $items = $this->repository->userIndex();
+
+        return Resource::collection($items);
+    }
+
+    public function categoryStepIndex(CategoryStepIndexRequest $request): AnonymousResourceCollection
+    {
+        $data = $request->validated();
+        $items = $this->repository->categoryStepIndex($data['type_id']);
 
         return Resource::collection($items);
     }

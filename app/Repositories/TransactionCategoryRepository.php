@@ -32,6 +32,21 @@ class TransactionCategoryRepository extends CoreRepository
             ->get();
     }
 
+    public function categoryStepIndex(int $typeId): Collection
+    {
+        return $this->query()
+            ->with('children')
+            ->where(function (Builder $query) {
+                $query->where('user_id', auth()->id())
+                    ->orWhereNull('user_id');
+            })
+            ->where(function (Builder $query) use ($typeId) {
+                $query->where('type_id', $typeId)
+                    ->orWhereNull('type_id');
+            })
+            ->get();
+    }
+
     public function whereId(int $id): ?Model
     {
         /** @var Model|null $res */

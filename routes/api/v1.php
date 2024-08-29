@@ -35,6 +35,10 @@ Route::apiResource('account-sums', AccountSumsController::class)
     ->only(['store', 'update']);
 
 // Transaction categories
+Route::prefix('transaction-categories')
+    ->name('transaction-categories.')
+    ->controller(TransactionCategoryController::class)
+    ->group(base_path('routes/api/v1/transaction-categories.php'));
 Route::apiResource('transaction-categories', TransactionCategoryController::class);
 
 // Transactions
