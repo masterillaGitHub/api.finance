@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\Currency;
+use App\Enums\TransactionType;
 use App\Models\Account;
-use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,13 +14,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TransactionFactory extends Factory
 {
-    const int TYPE_EXPENSE = 1;
-    const int TYPE_INCOME = 2;
-    const int TYPE_TRANSFER = 3;
-    const int CURRENCY_UAH = 1;
-    const int CURRENCY_USD = 2;
-    const int CURRENCY_EUR = 3;
-
     /**
      * Define the model's default state.
      *
@@ -28,27 +22,15 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::query()->inRandomOrder()->first();
-        $typeId = $this->faker->randomElement([self::TYPE_EXPENSE, self::TYPE_INCOME]);
-        $category = TransactionCategory::query()
-            ->where('user_id', $user->id)
-            ->where('type_id', $typeId)
-            ->inRandomOrder()
-            ->first();
-        $account = Account::query()
-            ->where('user_id', $user->id)
-            ->inRandomOrder()
-            ->first();
-        $currencyId = $this->faker->boolean(80)
-            ? self::CURRENCY_UAH
-            : $this->faker->randomElement([self::CURRENCY_USD, self::CURRENCY_EUR]);
+        $user = $this->getUser();
+        $typeId = $this->getTypeId();
 
         return [
             'user_id' => User::query()->inRandomOrder()->first(),
             'type_id' => $typeId,
-            'category_id' => $category,
-            'account_id' => $account,
-            'currency_id' => $currencyId,
+            'category_id' => $this->getCategory($user, $typeId),
+            'account_id' => $this->getAccount($user),
+            'currency_id' => $this->getCurrencyId(),
             'amount' => $this->getAmount(),
             'description' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
             'note' => $this->faker->boolean(50) ? $this->faker->sentence() : null,
@@ -57,6 +39,19 @@ class TransactionFactory extends Factory
                 : null,
             'transaction_at' => $this->faker->dateTimeBetween('-1 years'),
         ];
+    }
+
+    private function getUser(): User
+    {
+        return User::query()->inRandomOrder()->first();
+    }
+
+    private function getTypeId(): int
+    {
+        return $this->faker->randomElement([
+            TransactionType::EXPENSE->value,
+            TransactionType::INCOME->value
+        ]);
     }
 
     private function getAmount(): int
@@ -70,5 +65,32 @@ class TransactionFactory extends Factory
         }
 
         return $amount;
+    }
+
+    private function getAccount(User $user): Account
+    {
+        return Account::query()
+            ->where('user_id', $user->id)
+            ->inRandomOrder()
+            ->first();
+    }
+
+    private function getCategory(User $user, int $typeId): ?TransactionCategory
+    {
+        return TransactionCategory::query()
+            ->where('user_id', $user->id)
+            ->where('type_id', $typeId)
+            ->inRandomOrder()
+            ->first();
+    }
+
+    private function getCurrencyId(): int
+    {
+        return $this->faker->boolean(80)
+            ? Currency::UAH->value
+            : $this->faker->randomElement([
+                Currency::USD->value,
+                Currency::EUR->value
+            ]);
     }
 }
