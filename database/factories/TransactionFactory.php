@@ -23,10 +23,11 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         $user = $this->getUser();
-        $typeId = $this->getTypeId();
+        $amount = $this->getAmount();
+        $typeId = $this->getTypeId($amount);
 
         return [
-            'user_id' => User::query()->inRandomOrder()->first(),
+            'user_id' => $user->id,
             'type_id' => $typeId,
             'category_id' => $this->getCategory($user, $typeId),
             'account_id' => $this->getAccount($user),
@@ -46,12 +47,11 @@ class TransactionFactory extends Factory
         return User::query()->inRandomOrder()->first();
     }
 
-    private function getTypeId(): int
+    private function getTypeId(int $amount): int
     {
-        return $this->faker->randomElement([
-            TransactionType::EXPENSE->value,
-            TransactionType::INCOME->value
-        ]);
+        return $amount > 0
+            ? TransactionType::INCOME->value
+            : TransactionType::EXPENSE->value;
     }
 
     private function getAmount(): int
