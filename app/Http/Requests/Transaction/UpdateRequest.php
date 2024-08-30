@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests\Transaction;
 
-use Illuminate\Database\Query\Builder;
+use App\Enums\TransactionType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -23,6 +22,8 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $requiredIfTypeTransfer = 'required_if:relationships.type,' . TransactionType::TRANSFER->value;
+
         return [
             'amount' => 'integer|required',
             'note' => 'string|nullable',
@@ -32,6 +33,8 @@ class UpdateRequest extends FormRequest
             'relationships.account' => ['integer', 'required', 'exists:accounts,id'],
             'relationships.category' => ['integer', 'required', 'exists:transaction_categories,id'],
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],
+            'relationships.to_account' => ['integer', $requiredIfTypeTransfer, 'exists:accounts,id'],
+            'relationships.to_currency' => ['integer', $requiredIfTypeTransfer, 'exists:currencies,id'],
         ];
     }
 }
