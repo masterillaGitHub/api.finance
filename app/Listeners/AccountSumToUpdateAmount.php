@@ -61,7 +61,7 @@ class AccountSumToUpdateAmount
 
         $amount = $this->t->getAttribute($amountFiledName);
 
-        // If only 'amount' was changed and 'account', 'currency' was not changed
+        // If only 'amount' was changed, and 'account', 'currency' was not changed
         if ($this->t->isDirty($amountFiledName) && $this->t->isClean([$accountFiledName, $currencyFiledName])) {
             $amount = $this->getDifferenceAmount($amountFiledName);
         }

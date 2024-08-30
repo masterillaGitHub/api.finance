@@ -27,14 +27,15 @@ class UpdateRequest extends FormRequest
         return [
             'amount' => 'integer|required',
             'note' => 'string|nullable',
+            'to_amount' => ['integer', $requiredIfTypeTransfer, 'nullable'],
             'transaction_at' => 'date|nullable',
             'relationships' => ['array', 'nullable'],
             'relationships.type' => ['integer', 'required', 'exists:transaction_types,id'],
             'relationships.account' => ['integer', 'required', 'exists:accounts,id'],
             'relationships.category' => ['integer', 'required', 'exists:transaction_categories,id'],
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],
-            'relationships.to_account' => ['integer', $requiredIfTypeTransfer, 'exists:accounts,id'],
-            'relationships.to_currency' => ['integer', $requiredIfTypeTransfer, 'exists:currencies,id'],
+            'relationships.to_account' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:accounts,id'],
+            'relationships.to_currency' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:currencies,id'],
         ];
     }
 }
