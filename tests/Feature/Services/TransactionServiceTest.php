@@ -129,6 +129,39 @@ test('update to_account in transfer Transaction with update AccountSum', functio
     $this->assertEquals($newToAccountSum->fresh()->balance, 5000);
 });
 
+test('update type in expense Transaction with add a new AccountSum', function () {
+    $typeId = TransactionType::EXPENSE->value;
+    $currencyId = Currency::UAH->value;
+
+    UserGenerator::generate();
+    $transactionCategory = TransactionCategoryGenerator::generate([
+        'type_id' => $typeId,
+    ]);
+    $account = AccountGenerator::generate();
+    $accountSum = AccountSumGenerator::generate([
+        'account_id' => $account->id,
+        'currency_id' => $currencyId,
+        'balance' => -30000
+    ]);
+
+    $service = new TransactionService();
+
+    $transaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'account_id' => $account->id,
+        'category_id' => $transactionCategory->id,
+        'currency_id' => $currencyId,
+        'amount' => -5000,
+    ]);
+
+    $service->update($transaction, [
+        'type_id' => TransactionType::INCOME->value,
+        'amount' => 5000
+    ]);
+
+    $this->assertEquals($accountSum->fresh()->balance, -20000);
+});
+
 test('update account in expense Transaction with add a new AccountSum', function () {
     $typeId = TransactionType::EXPENSE->value;
     $currencyId = Currency::UAH->value;
