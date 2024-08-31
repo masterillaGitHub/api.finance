@@ -22,6 +22,7 @@ class TransactionRepository extends CoreRepository
     public function userIndex(): \Illuminate\Contracts\Pagination\Paginator
     {
         return $this->query()
+            ->has('account')
             ->where('user_id', auth()->id())
             ->orderByDesc('transaction_at')
             ->simplePaginate(40);
