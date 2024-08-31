@@ -29,7 +29,8 @@ class AddInitialTransaction
             ? TransactionType::INCOME->value
             : TransactionType::EXPENSE->value;
 
-        Transaction::create([
+        $t = new Transaction();
+        $t->fill([
             'user_id' => auth()->id(),
             'type_id' => $typeId,
             'account_id' => $item->getAttribute('account_id'),
@@ -37,6 +38,7 @@ class AddInitialTransaction
             'currency_id' => $item->getAttribute('currency_id'),
             'amount' => $data['balance'],
             'transaction_at' => now(),
-        ]);
+        ])
+        ->saveQuietly();
     }
 }
