@@ -24,6 +24,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'string|required',
             'icon' => 'string|required',
+            'place_type' => 'string|required|in:internal,external',
             'relationships' => ['array', 'nullable'],
             'relationships.category' => ['integer', 'required', 'exists:account_categories,id'],
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],

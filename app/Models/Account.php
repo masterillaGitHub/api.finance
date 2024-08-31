@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AccountPlaceType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,11 @@ class Account extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+
+    public function getPlaceType(): AccountPlaceType
+    {
+        return AccountPlaceType::from($this->place_type);
+    }
 
     // Relations
     public function category(): BelongsTo
