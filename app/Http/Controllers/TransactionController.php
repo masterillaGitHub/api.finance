@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Repositories\TransactionRepository as Repository;
 use App\Services\TransactionService as Service;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class TransactionController extends Controller
 {
@@ -57,6 +58,10 @@ class TransactionController extends Controller
      */
     public function update(UpdateRequest $request, Transaction $transaction): Resource
     {
+        if (! Gate::allows('update-transaction', $transaction)) {
+            abort(403);
+        }
+
         $data = $request->validated();
 
         $item = $this->service->update($transaction, $data);
