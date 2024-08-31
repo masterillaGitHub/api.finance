@@ -52,9 +52,9 @@ class TransactionService
 
             $model->fill($data);
 
-            TransactionUpdated::dispatch($model, $data);
-
             $model->save();
+
+            TransactionUpdated::dispatch($model, $data);
 
             DB::commit();
         }

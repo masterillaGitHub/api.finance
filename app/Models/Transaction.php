@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Casts\Amount;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Observers\TransactionObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+#[ObservedBy([TransactionObserver::class])]
 class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
