@@ -5,8 +5,17 @@ namespace App\Actions;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class ShowAllEntities
+final class ShowTestingEntities
 {
+    public static function listTransaction(): void
+    {
+        self::run([
+            \App\Models\Account::class,
+            \App\Models\AccountSum::class,
+            \App\Models\Transaction::class,
+        ]);
+    }
+
     public static function run(array $models): void
     {
         $data = [];
