@@ -23,9 +23,17 @@ class TransactionService
         try {
             DB::beginTransaction();
 
+            if (Arr::has($data['relationships'], 'tags')) {
+                $tagIds = Arr::pull($data['relationships'], 'tags');
+            }
+
             $data = $this->preparationData($data);
 
             $item = Model::create($data);
+
+            if (isset($tagIds)) {
+                $item->tags()->sync($tagIds);
+            }
 
             TransactionCreated::dispatch($item);
 
@@ -48,11 +56,19 @@ class TransactionService
         try {
             DB::beginTransaction();
 
+            if (Arr::has($data['relationships'], 'tags')) {
+                $tagIds = Arr::pull($data['relationships'], 'tags');
+            }
+
             $data = $this->preparationData($data);
 
             $model->fill($data);
 
             $model->save();
+
+            if (isset($tagIds)) {
+                $model->tags()->sync($tagIds);
+            }
 
             TransactionUpdated::dispatch($model, $data);
 

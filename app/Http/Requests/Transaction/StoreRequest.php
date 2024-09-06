@@ -38,6 +38,8 @@ class StoreRequest extends FormRequest
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],
             'relationships.to_account' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:accounts,id'],
             'relationships.to_currency' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:currencies,id'],
+            'relationships.tags' => ['array', 'nullable'],
+            'relationships.tags.*' => ['integer', 'required', 'exists:transaction_tags,id'],
         ];
     }
 }

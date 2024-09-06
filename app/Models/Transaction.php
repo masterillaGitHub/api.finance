@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +18,7 @@ class Transaction extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+
     protected $casts = [
         'accrual_at' => 'datetime',
         'created_at' => 'datetime',
@@ -62,5 +64,10 @@ class Transaction extends Model
     public function transferTransaction(): HasOne
     {
         return $this->hasOne(Transaction::class, 'transfer_transaction_id');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(TransactionTag::class, 'transaction_transaction_tag');
     }
 }

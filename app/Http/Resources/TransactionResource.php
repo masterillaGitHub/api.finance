@@ -32,6 +32,7 @@ class TransactionResource extends JsonResource
             'currency' => CurrencyResource::make($this->whenLoaded('currency')),
             'to_account' => AccountResource::make($this->whenLoaded('to_account')),
             'to_currency' => CurrencyResource::make($this->whenLoaded('to_currency')),
+            'tags' => TransactionTagResource::collection($this->whenLoaded('tags')),
         ];
     }
 }
