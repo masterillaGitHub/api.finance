@@ -44,6 +44,7 @@ class TransactionCategoryRepository extends CoreRepository
                 $query->where('type_id', $typeId)
                     ->orWhereNull('type_id');
             })
+            ->whereNull('parent_id')
             ->get();
     }
 
