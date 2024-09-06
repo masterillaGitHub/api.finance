@@ -10,8 +10,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "spatie/eloquent-sortable": "^4.4",
-        "spatie/laravel-query-builder": "^6.0",
-        "spatie/laravel-tags": "^4.6"
+        "spatie/laravel-query-builder": "^6.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",
