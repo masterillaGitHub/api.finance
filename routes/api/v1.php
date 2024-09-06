@@ -41,5 +41,10 @@ Route::prefix('transaction-categories')
     ->group(base_path('routes/api/v1/transaction-categories.php'));
 Route::apiResource('transaction-categories', TransactionCategoryController::class);
 
+// Tags
+Route::prefix('tags')
+    ->name('tags.')
+    ->group(base_path('routes/api/v1/tags.php'));
+
 // Transactions
 Route::apiResource('transactions', TransactionController::class);
