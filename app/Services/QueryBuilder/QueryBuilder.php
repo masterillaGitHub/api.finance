@@ -10,7 +10,7 @@ final class QueryBuilder
 {
     private Builder $builder;
 
-    private array $defaultSorts = ['id'];
+    private array $defaultSorts = [];
     private array $allowedFields = [];
     private array $allowedIncludes = [];
     private array $allowedFilters = [];
