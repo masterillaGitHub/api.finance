@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\TransactionCategory as Model;
 use App\Services\QueryBuilder\Filters\FiltersUserId;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -29,13 +30,15 @@ class TransactionCategoryRepository extends CoreRepository
                     ->orWhereNull('user_id');
             })
             ->whereNull('parent_id')
+            ->orderByRaw('ISNULL(order_column), order_column ASC')
+            ->orderBy('id')
             ->get();
     }
 
     public function categoryStepIndex(int $typeId): Collection
     {
         return $this->query()
-            ->with('children')
+            ->with(['children' => fn(Builder|HasMany $query) => $this->childrenOrderBy($query)])
             ->where(function (Builder $query) {
                 $query->where('user_id', auth()->id())
                     ->orWhereNull('user_id');
@@ -45,6 +48,8 @@ class TransactionCategoryRepository extends CoreRepository
                     ->orWhereNull('type_id');
             })
             ->whereNull('parent_id')
+            ->orderByRaw('ISNULL(order_column), order_column ASC')
+            ->orderBy('id')
             ->get();
     }
 
@@ -75,6 +80,11 @@ class TransactionCategoryRepository extends CoreRepository
                 AllowedFilter::custom('user_id', new FiltersUserId())
             ])
             ->build();
+    }
 
+    private function childrenOrderBy(Builder|HasMany $query): void
+    {
+        $query->orderByRaw('ISNULL(order_column), order_column ASC')
+            ->orderBy('id');
     }
 }

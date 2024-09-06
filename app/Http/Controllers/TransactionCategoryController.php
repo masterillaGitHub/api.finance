@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionCategory\CategoryStepIndexRequest;
 use App\Http\Requests\TransactionCategory\StoreRequest as StoreRequest;
 use App\Http\Requests\TransactionCategory\UpdateRequest as UpdateRequest;
+use App\Http\Requests\TransactionCategory\SetSortingRequest as SetSortingRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
 use App\Http\Resources\TransactionCategoryResource as Resource;
 use App\Models\TransactionCategory;
@@ -74,6 +75,15 @@ class TransactionCategoryController extends Controller
     public function destroy(TransactionCategory $transactionCategory): Response
     {
         $transactionCategory->delete();
+
+        return response()->noContent();
+    }
+
+    public function setSorting(SetSortingRequest $request): Response
+    {
+        $data = $request->validated();
+
+        $this->service->setSorting($data['orderNumbers']);
 
         return response()->noContent();
     }

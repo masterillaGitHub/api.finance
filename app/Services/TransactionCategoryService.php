@@ -77,4 +77,9 @@ class TransactionCategoryService
 
         return $model;
     }
+
+    public function setSorting(array $orderNumbers): void
+    {
+        Model::setNewOrder($orderNumbers);
+    }
 }
