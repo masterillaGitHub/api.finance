@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Tag as Model;
+use App\Models\TransactionTag as Model;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class TagService
+class TransactionTagService
 {
     /**
      * @throws Throwable

@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Tag as Model;
+use App\Models\TransactionTag as Model;
 use App\Services\QueryBuilder\Filters\FiltersUserId;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class TagRepository extends CoreRepository
+class TransactionTagRepository extends CoreRepository
 {
     protected function getModelClass(): string
     {
@@ -36,6 +36,7 @@ class TagRepository extends CoreRepository
         $model = $this->startConditions();
 
         return $this->builder($model::query())
+            ->setDefaultSorts(['order_column', 'id'])
             ->setAllowedIncludes([
             ])
             ->setAllowedFilters([

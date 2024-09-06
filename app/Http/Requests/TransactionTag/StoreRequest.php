@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Tag;
+namespace App\Http\Requests\TransactionTag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SetSortingRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class SetSortingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'orderNumbers' => 'array|required',
-            'orderNumbers.*' => 'integer|required',
+            'name' => 'string|required',
         ];
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Http\Resources\NormalizeResources\JsonResource;
-use App\Models\Tag as Model;
+use App\Models\TransactionTag as Model;
 use Illuminate\Database\Query\Builder;
 
-class TagResource extends JsonResource
+class TransactionTagResource extends JsonResource
 {
     public static $wrap = null;
 

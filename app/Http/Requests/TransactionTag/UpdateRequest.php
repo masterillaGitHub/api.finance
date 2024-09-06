@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Tag;
+namespace App\Http\Requests\TransactionTag;
 
 use Illuminate\Foundation\Http\FormRequest;
 

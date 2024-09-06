@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Tag\StoreRequest as StoreRequest;
-use App\Http\Requests\Tag\UpdateRequest as UpdateRequest;
-use App\Http\Requests\Tag\SetSortingRequest as SetSortingRequest;
+use App\Http\Requests\TransactionTag\StoreRequest as StoreRequest;
+use App\Http\Requests\TransactionTag\UpdateRequest as UpdateRequest;
+use App\Http\Requests\TransactionTag\SetSortingRequest as SetSortingRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
-use App\Http\Resources\TagResource as Resource;
-use App\Models\Tag;
-use App\Repositories\TagRepository as Repository;
-use App\Services\TagService as Service;
+use App\Http\Resources\TransactionTagResource as Resource;
+use App\Models\TransactionTag;
+use App\Repositories\TransactionTagRepository as Repository;
+use App\Services\TransactionTagService as Service;
 use Illuminate\Http\Response;
 
-class TagController extends Controller
+class TransactionTagController extends Controller
 {
     private Repository $repository;
     private Service $service;
@@ -54,7 +54,7 @@ class TagController extends Controller
     /**
      * @throws \Throwable
      */
-    public function update(UpdateRequest $request, Tag $tag): Resource
+    public function update(UpdateRequest $request, TransactionTag $tag): Resource
     {
         $data = $request->validated();
 
@@ -64,7 +64,7 @@ class TagController extends Controller
         return Resource::make($item);
     }
 
-    public function destroy(Tag $tag): Response
+    public function destroy(TransactionTag $tag): Response
     {
         $tag->delete();
 
