@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Transaction as Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -44,7 +45,6 @@ class TransactionRepository extends CoreRepository
         $model = $this->startConditions();
 
         return $this->builder($model::query())
-            ->setDefaultSorts(['-transaction_at'])
             ->setAllowedIncludes([
                 'type',
                 'account',
@@ -57,6 +57,10 @@ class TransactionRepository extends CoreRepository
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('account_id'),
+                AllowedFilter::callback('account_id_or_to_account_id', function(Builder $query, int $value) {
+                    $query->where('account_id', $value)
+                        ->orWhere('to_account_id', $value);
+                }),
             ])
             ->build();
 
