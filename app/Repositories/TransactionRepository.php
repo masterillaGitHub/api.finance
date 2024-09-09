@@ -25,7 +25,6 @@ class TransactionRepository extends CoreRepository
         return $this->query()
             ->has('account')
             ->where('user_id', auth()->id())
-            ->orderByDesc('transaction_at')
             ->simplePaginate(40);
     }
 
@@ -53,6 +52,9 @@ class TransactionRepository extends CoreRepository
                 'to_account',
                 'to_currency',
                 'tags',
+            ])
+            ->setAllowedSorts([
+                'transaction_at'
             ])
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
