@@ -55,3 +55,8 @@ Route::prefix('transactions')
 Route::prefix('banks')
     ->name('banks.')
     ->group(base_path('routes/api/v1/banks.php'));
+
+// Bank connections
+Route::prefix('bank-connections')
+    ->name('bank-connections.')
+    ->group(base_path('routes/api/v1/bank-connections.php'));
