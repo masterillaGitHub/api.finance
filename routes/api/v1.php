@@ -50,3 +50,8 @@ Route::prefix('transaction-tags')
 Route::prefix('transactions')
     ->name('transactions.')
     ->group(base_path('routes/api/v1/transactions.php'));
+
+// Banks
+Route::prefix('banks')
+    ->name('banks.')
+    ->group(base_path('routes/api/v1/banks.php'));
