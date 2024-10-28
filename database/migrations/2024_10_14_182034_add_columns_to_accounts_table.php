@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::table('accounts', function (Blueprint $table) {
             $table->dropColumn('bank_id');
             $table->dropColumn('bank_name');
+        });
 
-            $table->foreignId('bank_connection_id')
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->foreignId('bank_id')
                 ->after('credit_limit')
                 ->nullable()
                 ->constrained();
             $table->string('id_origin', 100)
-                ->after('bank_connection_id')
+                ->after('bank_id')
                 ->unique()
                 ->nullable();
             $table->json('data_origin')
@@ -35,11 +37,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->dropForeign(['bank_connection_id']);
-            $table->dropColumn('bank_connection_id');
+            $table->dropForeign(['bank_id']);
+            $table->dropColumn('bank_id');
             $table->dropColumn('id_origin');
             $table->dropColumn('data_origin');
+        });
 
+        Schema::table('accounts', function (Blueprint $table) {
             $table->string('bank_id', 100)->nullable()->after('icon');
             $table->string('bank_name', 100)->nullable()->after('bank_id');
 
