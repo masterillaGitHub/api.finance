@@ -60,3 +60,8 @@ Route::prefix('banks')
 Route::prefix('bank-connections')
     ->name('bank-connections.')
     ->group(base_path('routes/api/v1/bank-connections.php'));
+
+// Bank manager
+Route::prefix('bank-manager')
+    ->name('bank-manager.')
+    ->group(base_path('routes/api/v1/bank-manager.php'));
