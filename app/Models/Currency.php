@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'numeric_code' => 'integer',
+        ];
+    }
 }
