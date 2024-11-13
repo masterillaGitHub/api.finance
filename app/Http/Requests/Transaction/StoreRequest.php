@@ -22,22 +22,18 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        $requiredIfTypeTransfer = 'required_if:relationships.type,' . TransactionType::TRANSFER->value;
-
         return [
             'amount' => 'integer|required',
             'note' => 'string|nullable',
             'transaction_at' => 'date|nullable',
             'account_transfer_id' => 'integer|nullable|exists:accounts,id',
-            'to_amount' => ['numeric', $requiredIfTypeTransfer],
 
             'relationships' => ['array', 'nullable'],
             'relationships.type' => ['integer', 'required', 'exists:transaction_types,id'],
             'relationships.account' => ['integer', 'required', 'exists:accounts,id'],
             'relationships.category' => ['integer', 'required', 'exists:transaction_categories,id'],
             'relationships.currency' => ['integer', 'required', 'exists:currencies,id'],
-            'relationships.to_account' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:accounts,id'],
-            'relationships.to_currency' => ['integer', $requiredIfTypeTransfer, 'nullable', 'exists:currencies,id'],
+            'relationships.transfer_transaction' => ['integer', 'nullable', 'exists:transactions,id'],
             'relationships.tags' => ['array', 'nullable'],
             'relationships.tags.*' => ['integer', 'required', 'exists:transaction_tags,id'],
         ];

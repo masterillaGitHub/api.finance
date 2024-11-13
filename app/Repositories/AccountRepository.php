@@ -42,7 +42,7 @@ class AccountRepository extends CoreRepository
                 'sums',
                 'sums.currency',
             ])
-            ->setAllowedFilters(['id'])
+            ->setAllowedFilters([AllowedFilter::exact('id')])
             ->build();
 
     }

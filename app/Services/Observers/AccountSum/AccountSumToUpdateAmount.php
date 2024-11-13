@@ -21,14 +21,6 @@ class AccountSumToUpdateAmount extends AccountSumMain
             'currency_id',
             'amount',
         );
-
-        if ($this->type->isTransfer()) {
-            $this->updateAccountSum(
-                'to_account_id',
-                'to_currency_id',
-                'to_amount'
-            );
-        }
     }
 
     private function updateAccountSum(

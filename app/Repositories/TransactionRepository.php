@@ -49,20 +49,21 @@ class TransactionRepository extends CoreRepository
                 'account',
                 'category',
                 'currency',
-                'to_account',
-                'to_currency',
                 'tags',
+                'transfer_transaction',
+                'transfer_transaction.type',
+                'transfer_transaction.account',
+                'transfer_transaction.category',
+                'transfer_transaction.currency',
+                'transfer_transaction.tags',
             ])
             ->setAllowedSorts([
-                'transaction_at'
+                'id',
+                'transaction_at',
             ])
             ->setAllowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('account_id'),
-                AllowedFilter::callback('account_id_or_to_account_id', function(Builder $query, int $value) {
-                    $query->where('account_id', $value)
-                        ->orWhere('to_account_id', $value);
-                }),
             ])
             ->build();
 

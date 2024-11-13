@@ -21,13 +21,5 @@ class AccountSumToAddAmount extends AccountSumMain
                 $t->amount,
             );
         }
-
-        if ($this->type->isTransfer() && $this->isAccountInternal($t->to_account_id)) {
-            $this->accountSum->toAdd(
-                $t->to_account_id,
-                $t->to_currency_id,
-                $t->to_amount,
-            );
-        }
     }
 }

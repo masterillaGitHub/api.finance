@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionInputType;
 use App\Enums\TransactionType;
 use App\Events\Transaction\TransactionCreated;
+use App\Events\Transaction\TransactionDestroyed;
 use App\Events\Transaction\TransactionUpdated;
 use App\Models\Transaction as Model;
 use Exception;
@@ -19,6 +21,7 @@ class TransactionService
     public function store(array $data): Model
     {
         $data['user_id'] = auth()->id();
+        $data['input_type'] = TransactionInputType::MANUAL->value;
 
         try {
             DB::beginTransaction();
@@ -33,6 +36,10 @@ class TransactionService
 
             if (isset($tagIds)) {
                 $item->tags()->sync($tagIds);
+            }
+
+            if ($this->isTransferTransaction($item)) {
+                $this->updateTransferTransactionId($item);
             }
 
             TransactionCreated::dispatch($item);
@@ -83,6 +90,29 @@ class TransactionService
         return $model;
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function destroy(Model $item): void
+    {
+        try {
+            DB::beginTransaction();
+
+            $tempItem = $item;
+            $item->delete();
+
+            TransactionDestroyed::dispatch($tempItem);
+
+            DB::commit();
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
+
+    }
+
     private function preparationData(array $data): array
     {
         if (Arr::has($data, 'relationships')) {
@@ -104,15 +134,26 @@ class TransactionService
                 $data['currency_id'] = $relationships['currency'];
             }
 
-            if (Arr::has($relationships, 'to_account')) {
-                $data['to_account_id'] = $relationships['to_account'];
-            }
-
-            if (Arr::has($relationships, 'to_currency')) {
-                $data['to_currency_id'] = $relationships['to_currency'];
+            if (Arr::has($relationships, 'transfer_transaction')) {
+                $data['transfer_transaction_id'] = $relationships['transfer_transaction'];
             }
         }
 
         return $data;
+    }
+
+    private function isTransferTransaction(Model $transaction): bool
+    {
+        return $transaction->type_id === TransactionType::TRANSFER->value
+            && !empty($transaction->transfer_transaction_id);
+    }
+
+    private function updateTransferTransactionId(Model $transaction): void
+    {
+        $transferTransaction = Model::find($transaction->transfer_transaction_id);
+
+        $transferTransaction->transfer_transaction_id = $transaction->id;
+
+        $transferTransaction->save();
     }
 }

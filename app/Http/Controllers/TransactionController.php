@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\Transaction\TransactionCreated;
-use App\Events\Transaction\TransactionDestroyed;
+use App\Actions\TransactionsTransferFilter;
 use App\Http\Requests\Transaction\StoreRequest as StoreRequest;
 use App\Http\Requests\Transaction\UpdateRequest as UpdateRequest;
 use App\Http\Resources\NormalizeResources\AnonymousResourceCollection;
@@ -28,6 +27,7 @@ class TransactionController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $items = $this->repository->userIndex();
+        $items->setCollection(TransactionsTransferFilter::handle($items->getCollection()));
 
         return Resource::collection($items);
     }
@@ -70,12 +70,12 @@ class TransactionController extends Controller
         return Resource::make($item);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function destroy(Transaction $transaction): Response
     {
-        $item = $transaction;
-        $transaction->delete();
-
-        TransactionDestroyed::dispatch($item);
+        $this->service->destroy($transaction);
 
         return response()->noContent();
     }
