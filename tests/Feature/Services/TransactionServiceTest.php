@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\Currency;
-use App\Enums\TransactionType;
+use App\Enums\CurrencyEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\TransactionCategory;
 use Tests\Generators\AccountGenerator;
 use Tests\Generators\AccountSumGenerator;
@@ -10,13 +10,13 @@ use Tests\Generators\TransactionGenerator;
 use Tests\Generators\UserGenerator;
 
 test('update account and to_account from internal to external in transfer Transaction with update only internal AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
     $externalAccount = AccountGenerator::generate([
-        'place_type' => \App\Enums\AccountPlaceType::EXTERNAL
+        'place_type' => \App\Enums\AccountPlaceTypeEnum::EXTERNAL
     ]);
     $internalAccount = AccountGenerator::generate();
     $internalAccountSum = AccountSumGenerator::generate([
@@ -32,18 +32,25 @@ test('update account and to_account from internal to external in transfer Transa
         'account_id' => $internalAccount->id,
         'currency_id' => $currencyId,
         'amount' => -5000,
-
-        'to_account_id' => $externalAccount->id,
-        'to_currency_id' => $currencyId,
-        'to_amount' => 5000,
     ]);
 
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+
+        'account_id' => $externalAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
+    ]);
 
     $transaction->update([
         'account_id' => $externalAccount->id,
-        'to_account_id' => $internalAccount->id,
         'amount' => -5000,
-        'to_amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'account_id' => $internalAccount->id,
+        'amount' => 5000,
     ]);
 
     $this->assertEquals($internalAccountSum->fresh()->balance, 5000);
@@ -53,13 +60,13 @@ test('update account and to_account from internal to external in transfer Transa
 });
 
 test('update to_account from internal to external in transfer Transaction with update internal AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
     $toExternalAccount = AccountGenerator::generate([
-        'place_type' => \App\Enums\AccountPlaceType::EXTERNAL
+        'place_type' => \App\Enums\AccountPlaceTypeEnum::EXTERNAL
     ]);
     $toInternalAccount = AccountGenerator::generate();
     $toInternalAccountSum = AccountSumGenerator::generate([
@@ -81,17 +88,25 @@ test('update to_account from internal to external in transfer Transaction with u
         'account_id' => $fromInternalAccount->id,
         'currency_id' => $currencyId,
         'amount' => -5000,
+    ]);
 
-        'to_account_id' => $toExternalAccount->id,
-        'to_currency_id' => $currencyId,
-        'to_amount' => 5000,
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+
+        'account_id' => $toExternalAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
     ]);
 
     $transaction->update([
         'account_id' => $fromInternalAccount->id,
-        'to_account_id' => $toInternalAccount->id,
         'amount' => -5000,
-        'to_amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'account_id' => $toInternalAccount->id,
+        'amount' => 5000,
     ]);
 
     $this->assertEquals($fromInternalAccountSum->fresh()->balance, -5000);
@@ -102,8 +117,8 @@ test('update to_account from internal to external in transfer Transaction with u
 });
 
 test('update account from external to internal in transfer Transaction with update internal AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
@@ -121,7 +136,7 @@ test('update account from external to internal in transfer Transaction with upda
     ]);
 
     $fromExternalAccount = AccountGenerator::generate([
-        'place_type' => \App\Enums\AccountPlaceType::EXTERNAL
+        'place_type' => \App\Enums\AccountPlaceTypeEnum::EXTERNAL
     ]);
 
     $transaction = TransactionGenerator::generate([
@@ -131,17 +146,24 @@ test('update account from external to internal in transfer Transaction with upda
         'account_id' => $fromExternalAccount->id,
         'currency_id' => $currencyId,
         'amount' => -5000,
+    ]);
 
-        'to_account_id' => $toInternalAccount->id,
-        'to_currency_id' => $currencyId,
-        'to_amount' => 5000,
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+        'account_id' => $toInternalAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
     ]);
 
     $transaction->update([
         'account_id' => $fromInternalAccount->id,
-        'to_account_id' => $toInternalAccount->id,
         'amount' => -5000,
-        'to_amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'account_id' => $toInternalAccount->id,
+        'amount' => 5000,
     ]);
 
     $this->assertEquals($fromInternalAccountSum->fresh()->balance, -5000);
@@ -152,8 +174,8 @@ test('update account from external to internal in transfer Transaction with upda
 });
 
 test('update to_amount in transfer Transaction with update AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
@@ -171,23 +193,28 @@ test('update to_amount in transfer Transaction with update AccountSum', function
         'category_id' => $transactionCategory->id,
         'account_id' => $fromAccount->id,
         'currency_id' => $currencyId,
-        'to_account_id' => $toAccount->id,
-        'to_currency_id' => $currencyId,
         'amount' => -5000,
-        'to_amount' => 5000,
     ]);
 
-    $transaction->update([
-        'to_amount' => 4500
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+        'account_id' => $toAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'amount' => 4500
     ]);
 
     $this->assertEquals($toAccountSum->fresh()->balance, 4500);
 });
 
 test('update to_currency in transfer Transaction with update AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
-    $newCurrencyId = Currency::USD->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
+    $newCurrencyId = CurrencyEnum::USD->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
@@ -205,20 +232,24 @@ test('update to_currency in transfer Transaction with update AccountSum', functi
         'balance' => 0,
     ]);
 
-
     $transaction = TransactionGenerator::generate([
         'type_id' => $typeId,
         'category_id' => $transactionCategory->id,
         'account_id' => $fromAccount->id,
         'currency_id' => $currencyId,
-        'to_account_id' => $toAccount->id,
-        'to_currency_id' => $currencyId,
         'amount' => -5000,
-        'to_amount' => 5000,
     ]);
 
-    $transaction->update([
-        'to_currency_id' => $newCurrencyId,
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+        'account_id' => $toAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'currency_id' => $newCurrencyId,
     ]);
 
     $this->assertEquals($toAccountSum->fresh()->balance, 0);
@@ -226,8 +257,8 @@ test('update to_currency in transfer Transaction with update AccountSum', functi
 });
 
 test('update to_account in transfer Transaction with update AccountSum', function () {
-    $typeId = TransactionType::TRANSFER->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::TRANSFER->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategory::query()->where('type_id', $typeId)->first();
@@ -252,19 +283,24 @@ test('update to_account in transfer Transaction with update AccountSum', functio
         'balance' => 0,
     ]);
 
-    $transaction = TransactionGenerator::generate([
+    TransactionGenerator::generate([
         'type_id' => $typeId,
         'currency_id' => $currencyId,
         'category_id' => $transactionCategory->id,
         'account_id' => $fromAccount->id,
         'amount' => -5000,
-        'to_amount' => 5000,
-        'to_currency_id' => $currencyId,
-        'to_account_id' => $toAccount->id,
     ]);
 
-    $transaction->update([
-        'to_account_id' => $newToAccount->id,
+    $transferTransaction = TransactionGenerator::generate([
+        'type_id' => $typeId,
+        'category_id' => $transactionCategory->id,
+        'account_id' => $toAccount->id,
+        'currency_id' => $currencyId,
+        'amount' => 5000,
+    ]);
+
+    $transferTransaction->update([
+        'account_id' => $newToAccount->id,
     ]);
 
     $this->assertEquals($fromAccountSum->fresh()->balance, -5000);
@@ -273,8 +309,8 @@ test('update to_account in transfer Transaction with update AccountSum', functio
 });
 
 test('update type in expense Transaction with add a new AccountSum', function () {
-    $typeId = TransactionType::EXPENSE->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::EXPENSE->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategoryGenerator::generate([
@@ -296,7 +332,7 @@ test('update type in expense Transaction with add a new AccountSum', function ()
     ]);
 
     $transaction->update([
-        'type_id' => TransactionType::INCOME->value,
+        'type_id' => TransactionTypeEnum::INCOME->value,
         'amount' => 5000
     ]);
 
@@ -304,8 +340,8 @@ test('update type in expense Transaction with add a new AccountSum', function ()
 });
 
 test('update account in expense Transaction with add a new AccountSum', function () {
-    $typeId = TransactionType::EXPENSE->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::EXPENSE->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategoryGenerator::generate([
@@ -342,8 +378,8 @@ test('update account in expense Transaction with add a new AccountSum', function
 });
 
 test('update currency in income Transaction with add a new AccountSum', function () {
-    $typeId = TransactionType::INCOME->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::INCOME->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategoryGenerator::generate([
@@ -364,20 +400,20 @@ test('update currency in income Transaction with add a new AccountSum', function
     ]);
 
     $transaction->update([
-        'currency_id' => Currency::USD->value
+        'currency_id' => CurrencyEnum::USD->value
     ]);
 
     $this->assertEquals($accountSum->fresh()->balance, -30000);
     $this->assertDatabaseHas('account_sums', [
         'account_id' => $account->id,
-        'currency_id' => Currency::USD->value,
+        'currency_id' => CurrencyEnum::USD->value,
         'balance' => 5000,
     ]);
 });
 
 test('update amount in income Transaction with update balance in Account', function () {
-    $typeId = TransactionType::INCOME->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::INCOME->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategoryGenerator::generate([
@@ -405,8 +441,8 @@ test('update amount in income Transaction with update balance in Account', funct
 });
 
 test('update amount in expense Transaction with update balance in Account', function () {
-    $typeId = TransactionType::EXPENSE->value;
-    $currencyId = Currency::UAH->value;
+    $typeId = TransactionTypeEnum::EXPENSE->value;
+    $currencyId = CurrencyEnum::UAH->value;
 
     UserGenerator::generate();
     $transactionCategory = TransactionCategoryGenerator::generate([
@@ -425,6 +461,8 @@ test('update amount in expense Transaction with update balance in Account', func
         'currency_id' => $currencyId,
         'amount' => 500,
     ]);
+
+//    \App\Actions\ShowTestingEntities::listTransaction();
 
     $transaction->update([
         'amount' => -1500

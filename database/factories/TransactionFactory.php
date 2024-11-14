@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Enums\Currency;
-use App\Enums\TransactionType;
+use App\Enums\CurrencyEnum;
+use App\Enums\TransactionInputTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Account;
 use App\Models\TransactionCategory;
 use App\Models\User;
@@ -33,6 +34,7 @@ class TransactionFactory extends Factory
             'account_id' => $this->getAccount($user),
             'currency_id' => $this->getCurrencyId(),
             'amount' => $this->getAmount(),
+            'input_type' => TransactionInputTypeEnum::MANUAL->value,
             'description' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
             'note' => $this->faker->boolean(50) ? $this->faker->sentence() : null,
             'accrual_at' => $this->faker->boolean(10)
@@ -50,8 +52,8 @@ class TransactionFactory extends Factory
     private function getTypeId(int $amount): int
     {
         return $amount > 0
-            ? TransactionType::INCOME->value
-            : TransactionType::EXPENSE->value;
+            ? TransactionTypeEnum::INCOME->value
+            : TransactionTypeEnum::EXPENSE->value;
     }
 
     private function getAmount(): int
@@ -87,10 +89,10 @@ class TransactionFactory extends Factory
     private function getCurrencyId(): int
     {
         return $this->faker->boolean(80)
-            ? Currency::UAH->value
+            ? CurrencyEnum::UAH->value
             : $this->faker->randomElement([
-                Currency::USD->value,
-                Currency::EUR->value
+                CurrencyEnum::USD->value,
+                CurrencyEnum::EUR->value
             ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\TransactionInputType;
+use App\Enums\TransactionInputTypeEnum;
 use App\Models\AccountCategory;
 use App\Models\Currency;
 use App\Models\User;
@@ -27,11 +27,11 @@ class AccountFactory extends Factory
             'user_id' => User::inRandomOrder()->first(),
             'category_id' => AccountCategory::inRandomOrder()->first(),
             'currency_id' => Currency::inRandomOrder()->first(),
-            'input_type' => TransactionInputType::MANUAL,
+            'input_type' => TransactionInputTypeEnum::MANUAL,
             'name' => $this->randomName(),
             'icon' => $this->randomIcon(),
-            'bank_name' => $bankName,
-            'credit_limit' => $bankName ? mt_rand(100, 20000) : null,
+//            'bank_name' => $bankName,
+//            'credit_limit' => $bankName ? mt_rand(100, 20000) : null,
         ];
     }
 
