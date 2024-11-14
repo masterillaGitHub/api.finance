@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Enums\TransactionParentCategory;
+use App\Enums\TransactionParentCategoryEnum;
 use App\Models\Transaction;
 use App\Models\User;
 
@@ -19,7 +19,7 @@ class TransactionPolicy
     public function update(User $user, Transaction $transaction): bool
     {
         $isSameUser = $user->id === $transaction->user_id;
-        $isInitial = $transaction->category_id === TransactionParentCategory::INITIAL->value;
+        $isInitial = $transaction->category_id === TransactionParentCategoryEnum::INITIAL->value;
 
         return $isSameUser && !$isInitial;
     }

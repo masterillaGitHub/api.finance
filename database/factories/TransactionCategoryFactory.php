@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,8 +22,8 @@ class TransactionCategoryFactory extends Factory
     public function definition(): array
     {
         $typeId = $this->faker->boolean(85)
-            ? TransactionType::EXPENSE->value
-            : TransactionType::INCOME->value;
+            ? TransactionTypeEnum::EXPENSE->value
+            : TransactionTypeEnum::INCOME->value;
         $name = $this->faker->word() . ' ' . ($typeId === 1 ? 'витрата' : 'дохід');
 
         return [

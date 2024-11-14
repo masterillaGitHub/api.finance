@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\TransactionInputType;
+use App\Enums\TransactionInputTypeEnum;
 use App\Observers\TransactionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Enums\TransactionType as TransactionTypeEnum;
+use App\Enums\TransactionTypeEnum as TransactionTypeEnum;
 
 
 #[ObservedBy([TransactionObserver::class])]
@@ -32,9 +32,9 @@ class Transaction extends Model
         return TransactionTypeEnum::from($this->type_id);
     }
 
-    public function getInputType(): TransactionInputType
+    public function getInputType(): TransactionInputTypeEnum
     {
-        return TransactionInputType::from($this->input_type);
+        return TransactionInputTypeEnum::from($this->input_type);
     }
 
     // Relations

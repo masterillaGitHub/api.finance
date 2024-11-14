@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AccountPlaceType;
+use App\Enums\AccountPlaceTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,9 +15,9 @@ class Account extends Model
 
     protected $guarded = false;
 
-    public function getPlaceType(): AccountPlaceType
+    public function getPlaceType(): AccountPlaceTypeEnum
     {
-        return AccountPlaceType::from($this->place_type);
+        return AccountPlaceTypeEnum::from($this->place_type);
     }
 
     // Relations

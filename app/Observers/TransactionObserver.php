@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Enums\TransactionInputType;
+use App\Enums\TransactionInputTypeEnum;
 use App\Models\Transaction;
 use App\Services\Observers\AccountSum\AccountSumToAddAmount;
 use App\Services\Observers\AccountSum\AccountSumToRemoveAmount;
@@ -16,7 +16,7 @@ class TransactionObserver
      */
     public function created(Transaction $transaction): void
     {
-        if ($transaction->getInputType() === TransactionInputType::MANUAL) {
+        if ($transaction->getInputType() === TransactionInputTypeEnum::MANUAL) {
             (new AccountSumToAddAmount())->handle($transaction);
         }
     }
@@ -36,7 +36,7 @@ class TransactionObserver
             $transferService->restore();
         }
 
-        if ($transaction->getInputType() === TransactionInputType::MANUAL) {
+        if ($transaction->getInputType() === TransactionInputTypeEnum::MANUAL) {
             (new AccountSumToUpdateAmount())->handle($transaction);
         }
     }
@@ -52,7 +52,7 @@ class TransactionObserver
             $transferService->remove();
         }
 
-        if ($transaction->getInputType() === TransactionInputType::MANUAL) {
+        if ($transaction->getInputType() === TransactionInputTypeEnum::MANUAL) {
             (new AccountSumToRemoveAmount())->handle($transaction);
         }
     }
@@ -62,7 +62,7 @@ class TransactionObserver
      */
     public function restored(Transaction $transaction): void
     {
-        if ($transaction->getInputType() === TransactionInputType::MANUAL) {
+        if ($transaction->getInputType() === TransactionInputTypeEnum::MANUAL) {
             (new AccountSumToAddAmount())->handle($transaction);
         }
     }

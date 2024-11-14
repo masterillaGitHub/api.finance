@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 use Illuminate\Support\Collection;
 
@@ -33,7 +34,7 @@ final class TransactionsTransferFilter
 
     private function handleDoubleTransferTransaction(Transaction $transaction): void
     {
-        if ($transaction->getType() !== \App\Enums\TransactionType::TRANSFER) {
+        if ($transaction->getType() !== TransactionTypeEnum::TRANSFER) {
             return;
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AccountPlaceType: string
+enum AccountPlaceTypeEnum: string
 {
     case INTERNAL = 'internal';
     case EXTERNAL = 'external';

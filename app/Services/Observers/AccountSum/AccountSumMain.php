@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace App\Services\Observers\AccountSum;
 
 use App\Actions\UpdateBalanceAccountSum;
-use App\Enums\AccountPlaceType;
-use App\Enums\TransactionType;
+use App\Enums\AccountPlaceTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Account;
 use App\Models\Transaction;
 
 class AccountSumMain
 {
     protected UpdateBalanceAccountSum $accountSum;
-    protected TransactionType $type;
+    protected TransactionTypeEnum $type;
 
     public function __construct()
     {
@@ -23,12 +23,12 @@ class AccountSumMain
     {
         return Account::query()
             ->where('id', $accountId)
-            ->where('place_type', AccountPlaceType::INTERNAL)
+            ->where('place_type', AccountPlaceTypeEnum::INTERNAL)
             ->exists();
     }
 
     protected function init(Transaction $transaction): void
     {
-        $this->type = TransactionType::from($transaction->type_id);
+        $this->type = TransactionTypeEnum::from($transaction->type_id);
     }
 }

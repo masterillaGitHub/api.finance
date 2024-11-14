@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum Currency: int
+enum CurrencyEnum: int
 {
     case UAH = 1;
     case USD = 2;

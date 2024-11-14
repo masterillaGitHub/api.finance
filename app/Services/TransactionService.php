@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\TransactionInputType;
-use App\Enums\TransactionType;
+use App\Enums\TransactionInputTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Events\Transaction\TransactionCreated;
 use App\Events\Transaction\TransactionDestroyed;
 use App\Events\Transaction\TransactionUpdated;
@@ -21,7 +21,7 @@ class TransactionService
     public function store(array $data): Model
     {
         $data['user_id'] = auth()->id();
-        $data['input_type'] = TransactionInputType::MANUAL->value;
+        $data['input_type'] = TransactionInputTypeEnum::MANUAL->value;
 
         try {
             DB::beginTransaction();
@@ -144,7 +144,7 @@ class TransactionService
 
     private function isTransferTransaction(Model $transaction): bool
     {
-        return $transaction->type_id === TransactionType::TRANSFER->value
+        return $transaction->type_id === TransactionTypeEnum::TRANSFER->value
             && !empty($transaction->transfer_transaction_id);
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Transaction;
 
-use App\Enums\TransactionType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

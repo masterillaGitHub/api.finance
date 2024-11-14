@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 
 final class DefaultTransactionCategory
 {
@@ -35,7 +35,7 @@ final class DefaultTransactionCategory
             ['name' => 'Інше', 'icon' => 'mdi-dots-horizontal'],
         ];
 
-        return $this->addTypesId($list, TransactionType::EXPENSE);
+        return $this->addTypesId($list, TransactionTypeEnum::EXPENSE);
     }
 
     public function incomes(): array
@@ -48,15 +48,15 @@ final class DefaultTransactionCategory
             ['name' => 'Інше', 'icon' => 'mdi-dots-horizontal'],
         ];
 
-        return $this->addTypesId($list, TransactionType::INCOME);
+        return $this->addTypesId($list, TransactionTypeEnum::INCOME);
     }
 
-    private function addTypesId(array $items, TransactionType $type): array
+    private function addTypesId(array $items, TransactionTypeEnum $type): array
     {
         return array_map(fn (array $item) => $this->addTypeId($item, $type), $items);
     }
 
-    private function addTypeId(array $item, TransactionType $type): array
+    private function addTypeId(array $item, TransactionTypeEnum $type): array
     {
         if (isset($item['children'])) {
             $item['children'] = $this->addTypeId($item['children'], $type);

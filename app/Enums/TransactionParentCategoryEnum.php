@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TransactionParentCategory: int
+enum TransactionParentCategoryEnum: int
 {
     case INITIAL = 1;
     case CORRECTION = 2;

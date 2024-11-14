@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\Observers\Transaction;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 
 final readonly class TransactionTransfer
@@ -65,19 +65,19 @@ final readonly class TransactionTransfer
 
     public function isTransfer(): bool
     {
-        return $this->transaction->type_id === TransactionType::TRANSFER->value;
+        return $this->transaction->type_id === TransactionTypeEnum::TRANSFER->value;
     }
 
     public function isTypeSwitchedToNotTransfer(): bool
     {
-        return $this->transaction->getOriginal('type_id') === TransactionType::TRANSFER->value
-            && $this->transaction->getAttribute('type_id') !== TransactionType::TRANSFER->value;
+        return $this->transaction->getOriginal('type_id') === TransactionTypeEnum::TRANSFER->value
+            && $this->transaction->getAttribute('type_id') !== TransactionTypeEnum::TRANSFER->value;
     }
 
     public function isTypeSwitchedToTransfer(): bool
     {
-        return $this->transaction->getOriginal('type_id') !== TransactionType::TRANSFER->value
-            && $this->transaction->getAttribute('type_id') === TransactionType::TRANSFER->value;
+        return $this->transaction->getOriginal('type_id') !== TransactionTypeEnum::TRANSFER->value
+            && $this->transaction->getAttribute('type_id') === TransactionTypeEnum::TRANSFER->value;
     }
 
     private function getTransferTransaction(): ?Transaction

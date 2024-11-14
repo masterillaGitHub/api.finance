@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AccountCategoryId: int
+enum AccountCategoryIdEnum: int
 {
     case CASH = 1;
     case BANK_ACCOUNT = 2;

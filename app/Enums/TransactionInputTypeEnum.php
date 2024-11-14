@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TransactionInputType: string
+enum TransactionInputTypeEnum: string
 {
     case AUTO = 'auto';
     case MANUAL = 'manual';
