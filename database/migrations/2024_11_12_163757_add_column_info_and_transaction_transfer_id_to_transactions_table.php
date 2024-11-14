@@ -19,6 +19,10 @@ return new class extends Migration
                 ->nullable()
                 ->after('info')
                 ->constrained('transactions');
+            $table->string('id_origin', 100)
+                ->after('transfer_transaction_id')
+                ->nullable()
+                ->unique();
         });
     }
 
@@ -31,6 +35,7 @@ return new class extends Migration
             $table->dropForeign(['transfer_transaction_id']);
             $table->dropColumn('transfer_transaction_id');
             $table->dropColumn('info');
+            $table->dropColumn('id_origin');
         });
     }
 };

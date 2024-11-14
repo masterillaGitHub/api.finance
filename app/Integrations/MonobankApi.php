@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Integrations;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 final class MonobankApi
 {
@@ -35,5 +37,25 @@ final class MonobankApi
         $info = $this->getClientInfo();
 
         return $info['accounts'];
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function getStatement(string $accountId, Carbon $dateFrom, Carbon $dateTo = null): array
+    {
+        $url = "/personal/statement/{$accountId}/{$dateFrom->timestamp}";
+
+        if ($dateTo) {
+            $url .= "/{$dateTo->timestamp}";
+        }
+
+        $response = $this->http->get($url, [
+            'headers' => [
+                'X-Token' => $this->token,
+            ]
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }
