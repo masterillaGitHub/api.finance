@@ -23,6 +23,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'amount' => 'integer|required',
+            'description' => 'string|nullable',
             'note' => 'string|nullable',
             'transaction_at' => 'date|nullable',
             'relationships' => ['array', 'nullable'],
