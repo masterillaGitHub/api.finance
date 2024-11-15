@@ -113,6 +113,8 @@ final class BankAccountUpdateTransactions
             'category_id' => $categoryId,
             'input_type' => TransactionInputTypeEnum::AUTO->value,
             'amount' => $transaction->amount,
+            'commission' => $transaction->commissionRate,
+            'cashback' => $transaction->cashbackAmount,
             'description' => $transaction->description,
             'note' => $transaction->comment,
             'info' => $transaction->toArray(),

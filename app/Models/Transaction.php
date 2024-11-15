@@ -23,6 +23,9 @@ class Transaction extends Model
 
     protected $casts = [
         'info' => 'array',
+        'amount' => 'integer',
+        'commission' => 'integer',
+        'cashback' => 'integer',
         'accrual_at' => 'datetime',
         'created_at' => 'datetime',
         'transaction_at' => 'datetime',
